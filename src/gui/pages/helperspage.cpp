@@ -50,7 +50,7 @@ HelpersPage::HelpersPage(Config& config, QWidget *parent) : ConfigurationPage(co
     connect(add, &QPushButton::clicked, [this](){
         QFileDialog dialog(nullptr, QStringLiteral("Open Helper Program"));
 #ifdef Q_OS_WIN
-        dialog.setNameFilter(QStringLiteral("Executable (*.exe)"));
+        dialog.setNameFilters(QStringList({ QStringLiteral("Executable (*.exe)"), QStringLiteral("Batch File (*.bat *.cmd)"), QStringLiteral("Powershell File (*.ps1)") }));
 #else
         dialog.setNameFilter(QStringLiteral("Executable (*)"));
         dialog.setProxyModel(new ExecutableFilter);
