@@ -130,22 +130,23 @@ jobs:
           
       - name: Package Dependencies
         run: |
-          mkdir AppDir
-          mkdir ./AppDir/bin
-          mkdir ./AppDir/lib
-          mkdir ./AppDir/share
-          mkdir ./AppDir/share/applications
-          mkdir ./AppDir/share/icons
-          mkdir ./AppDir/share/icons/foo
-          mkdir ./AppDir/share/icons/foo/256
-          touch ./AppDir/share/icons/foo/256/foo.png
-          echo -e '[Desktop Entry]\nType=Application\nName=lunar-client-qt\nComment=lunar client qt\nExec=lunar-client-qt\nIcon=foo\nCategories=Game;' > ./AppDir/share/applications/lunar-client-qt.desktop
+          mkdir -p AppDir/bin
           mv lunar-client-qt AppDir/bin/
-          ./linuxdeployqt.AppImage ./AppDir/share/applications/lunar-client-qt.desktop -appimage
+
+          mkdir -p AppDir/share/applications
+          cat <<- EOF > AppDir/share/applications/Lunar\ Client\ Qt.desktop
+          [Desktop Entry]
+          Type=Application
+          Name=Lunar Client Qt
+          Comment=Lunar Client Qt
+          Exec=lunar-client-qt
+          Categories=Game;
+          EOF
+
+          ./linuxdeployqt.AppImage AppDir/share/applications/Lunar\ Client\ Qt.desktop -appimage
           rm ./linuxdeployqt.AppImage
           mkdir executablefile
           mv *.AppImage executablefile
-        
       - uses: actions/upload-artifact@v2
         with:
           name: linux-appimage
