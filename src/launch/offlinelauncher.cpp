@@ -24,7 +24,7 @@ OfflineLauncher::OfflineLauncher(const Config& config, QObject *parent) : Launch
 }
 
 
-void OfflineLauncher::launch(CosmeticsState cosmeticsState) {
+void OfflineLauncher::launch() {
     QProcess process;
     process.setProgram(config.useCustomJre ? config.customJrePath : findJavaExecutable(config.gameVersion));
 
@@ -60,10 +60,10 @@ void OfflineLauncher::launch(CosmeticsState cosmeticsState) {
                 config.autoggMessage
                 );
 
-    if(config.useLevelHeadPrefix)
+    if(config.useLevelHeadPrefix || config.useLevelHeadNick)
         args << getAgentFlags(
-                QTemporaryFile::createNativeFile(":/res/CustomLevelHead.jar")->fileName(),
-                config.levelHeadPrefix
+                QTemporaryFile::createNativeFile(":/res/LevelHeadImproved.jar")->fileName(),
+                getLevelHeadOptions(config.useLevelHeadPrefix, config.levelHeadPrefix, config.useLevelHeadNick, QString::number(config.levelHeadNickLevel))
                 );
 
     if(config.useNickHiderName)
@@ -72,7 +72,7 @@ void OfflineLauncher::launch(CosmeticsState cosmeticsState) {
                 config.nickHiderName
                 );
 
-    if(cosmeticsState == CosmeticsState::UNLOCKED)
+    if(config.useCosmetics && config.unlockCosmetics)
         args << "-javaagent:" + QTemporaryFile::createNativeFile(":/res/UnlockedCosmetics.jar")->fileName();
 
     args << QProcess::splitCommand(config.jvmArgs);
@@ -84,12 +84,12 @@ void OfflineLauncher::launch(CosmeticsState cosmeticsState) {
             "--assetIndex", config.gameVersion == QStringLiteral("1.7") ? "1.7.10" : config.gameVersion,
             "--userProperties", "{}",
             "--gameDir", config.useCustomMinecraftDir ? config.customMinecraftDir : minecraftDir,
-            "--launcherVersion", "2.8.8",
+            "--launcherVersion", "2.9.3",
             "--width", QString::number(config.windowWidth),
             "--height", QString::number(config.windowHeight)
     };
 
-    if(cosmeticsState != CosmeticsState::OFF)
+    if(config.useCosmetics)
         args << "--texturesDir" << lunarDir + "/textures";
 
     if(config.joinServerOnLaunch)
@@ -101,12 +101,19 @@ void OfflineLauncher::launch(CosmeticsState cosmeticsState) {
 
     QProcessEnvironment env = QProcessEnvironment::systemEnvironment();
     env.remove("windir");
+    env.remove("JAVA_OPTS");
 
     process.setProcessEnvironment(env);
     process.setWorkingDirectory(lunarDir + "/offline/" + config.gameVersion);
 
     if(!process.startDetached()){
         emit error("Failed to start process: " + process.errorString());
+    }
+
+    if (!config.helpers.isEmpty())
+    {
+        foreach(const QString & path, config.helpers)
+            HelperLaunch(path);
     }
 }
 
@@ -141,4 +148,10 @@ QString OfflineLauncher::findJavaExecutable(const QString& version) {
     }
 
     return {};
+}
+
+void OfflineLauncher::HelperLaunch(const QString& helper) {
+    QProcess process;
+    process.setProgram(helper);
+    process.startDetached(); 
 }

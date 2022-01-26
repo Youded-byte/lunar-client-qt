@@ -14,13 +14,13 @@ jobs:
   build_windows:
     name: "Windows Build"
 
-    runs-on: windows-latest
+    runs-on: windows-2022
 
     steps:
     - uses: actions/checkout@v2
-      
-    - name: Install Qt & MinGW
-      uses: jurplel/install-qt-action@v2.14.0
+        
+    - name: Install Qt
+      uses: jurplel/install-qt-action@v2
       with:
         version: '5.15.2'
         host: 'windows'
@@ -33,7 +33,7 @@ jobs:
 
     - name: Build
       run: cmake --build . --config ${{env.BUILD_TYPE}}
-      
+            
     - name: Package Dependencies
       shell: bash
       run: |
@@ -45,6 +45,7 @@ jobs:
       with:
         name: windows
         path: ./with_deps
+        
   build_mac:
     name: "MacOS Build"
     runs-on: macos-latest
@@ -55,7 +56,7 @@ jobs:
       - name: Install Qt
         uses: jurplel/install-qt-action@v2.14.0
         with:
-          version: '5.15.2'
+          version: '6.2.2'
           host: 'mac'
           target: 'desktop'
           arch: 'clang_64'
@@ -79,7 +80,6 @@ jobs:
           name: mac
           path: ./mac.tar.gz
           
-          
   arch_build:
     name: "Arch Linux Build"
     
@@ -88,14 +88,14 @@ jobs:
     
     steps: 
       - uses: actions/checkout@v2
-      
+
       - name: Install Packages
         run: |
-          pacman -Syu --noconfirm qt5-base qt5-svg cmake base-devel
+          pacman -Syu --noconfirm qt6-base qt6-svg cmake base-devel
           
       - name: Configure CMake
         run: cmake . -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}}
-        
+       
       - name: Build
         run: make
         
@@ -103,4 +103,51 @@ jobs:
         with:
           name: linux
           path: ./lunar-client-qt
+  
+  ubuntu_build:
+    name: "Ubuntu Linux Build"
+    
+    runs-on: ubuntu-18.04
+    steps:
+      - uses: actions/checkout@v2
+      - name: Install Qt
+        uses: jurplel/install-qt-action@v2
+        with:
+          install-deps: 'true'
+          modules: 'qtwidget qtgui qtsvg qtnetwork'
+          setup-python: 'false'
+        
+      - name: Install linuxdeployqt
+        run: |
+          curl -L -A "Internet Explorer" -o linuxdeployqt.AppImage https://github.com/probonopd/linuxdeployqt/releases/download/continuous/linuxdeployqt-continuous-x86_64.AppImage
+          chmod a+x ./linuxdeployqt.AppImage
+          
+      - name: Configure CMake
+        run: cmake . -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}}
+       
+      - name: Build
+        run: make
+          
+      - name: Package Dependencies
+        run: |
+          mkdir AppDir
+          mkdir ./AppDir/bin
+          mkdir ./AppDir/lib
+          mkdir ./AppDir/share
+          mkdir ./AppDir/share/applications
+          mkdir ./AppDir/share/icons
+          mkdir ./AppDir/share/icons/foo
+          mkdir ./AppDir/share/icons/foo/256
+          touch ./AppDir/share/icons/foo/256/foo.png
+          echo -e '[Desktop Entry]\nType=Application\nName=lunar-client-qt\nComment=lunar client qt\nExec=lunar-client-qt\nIcon=foo\nCategories=Game;' > ./AppDir/share/applications/lunar-client-qt.desktop
+          mv lunar-client-qt AppDir/bin/
+          ./linuxdeployqt.AppImage ./AppDir/share/applications/lunar-client-qt.desktop -appimage
+          rm ./linuxdeployqt.AppImage
+          mkdir executablefile
+          mv *.AppImage executablefile
+        
+      - uses: actions/upload-artifact@v2
+        with:
+          name: linux-appimage
+          path: ./executablefile
     

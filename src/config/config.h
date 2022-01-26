@@ -34,17 +34,23 @@ public:
     bool useNickHiderName;
     QString nickHiderName;
 
+    bool useAutoggMessage;
+    QString autoggMessage;
+
     bool useLevelHeadPrefix;
     QString levelHeadPrefix;
 
-    bool useAutoggMessage;
-    QString autoggMessage;
+    bool useLevelHeadNick;
+    int levelHeadNickLevel;
 
     int windowWidth;
     int windowHeight;
 
+    bool useCosmetics;
+    bool unlockCosmetics;
 
     QStringList agents;
+    QStringList helpers;
 public:
     void save();
     static Config load();

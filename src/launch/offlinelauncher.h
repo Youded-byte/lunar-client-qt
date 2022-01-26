@@ -15,11 +15,12 @@ Q_OBJECT
 public:
     explicit OfflineLauncher(const Config& config, QObject* parent = nullptr);
 
-    void launch(CosmeticsState cosmeticsState) override;
+    void launch();
 signals:
     void error(const QString& message);
 private:
     static QString findJavaExecutable(const QString& version);
+    static void HelperLaunch(const QString& helper);
 private:
     const static QString lunarDir;
     const static QString minecraftDir;
