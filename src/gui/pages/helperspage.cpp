@@ -10,6 +10,23 @@
 #include <QFileDialog>
 #include <QJsonArray>
 #include <QJsonObject>
+#include <QSortFilterProxyModel>
+#include <QFileSystemModel>
+
+#ifndef Q_OS_WIN
+class ExecutableFilter : public QSortFilterProxyModel {
+protected:
+    [[nodiscard]] bool filterAcceptsRow(int sourceRow, const QModelIndex &sourceParent) const override {
+        QFileSystemModel* fileModel = qobject_cast<QFileSystemModel*>(sourceModel());
+        QFileInfo file( fileModel->filePath(sourceModel()->index(sourceRow, 0, sourceParent)) );
+
+        if (file.isExecutable())
+            return true;
+        else
+            return false;
+    }
+};
+#endif
 
 HelpersPage::HelpersPage(Config& config, QWidget *parent) : ConfigurationPage(config, parent) {
     QVBoxLayout* mainLayout = new QVBoxLayout();
@@ -31,15 +48,19 @@ HelpersPage::HelpersPage(Config& config, QWidget *parent) : ConfigurationPage(co
     QPushButton* moveDown = new QPushButton(QStringLiteral("Move Down"));
 
     connect(add, &QPushButton::clicked, [this](){
-        QStringList files = QFileDialog::getOpenFileNames(
-                nullptr,
-                QStringLiteral("Open Helper Program"),
-                {},
-                QStringLiteral("Helper Program (*.*)")
-                );
-        foreach(const QString& str, files){
-            if(!str.isEmpty()){
-                addHelper(str, true);
+        QFileDialog dialog(nullptr, QStringLiteral("Open Helper Program"));
+#ifdef Q_OS_WIN
+        dialog.setNameFilter(QStringLiteral("Executable (*.exe)"));
+#else
+        dialog.setNameFilter(QStringLiteral("Executable (*)"));
+        dialog.setProxyModel(new ExecutableFilter);
+#endif
+        dialog.setFileMode(QFileDialog::ExistingFiles);
+        if(dialog.exec() == QFileDialog::Accepted){
+            foreach(const QString& str, dialog.selectedFiles()){
+                if(!str.isEmpty()){
+                    addHelper(str, true);
+                }
             }
         }
     });
