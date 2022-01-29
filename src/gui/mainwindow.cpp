@@ -12,6 +12,8 @@
 #include <QStandardPaths>
 #include <QJsonDocument>
 #include <QMessageBox>
+#include <QFileSystemModel>
+#include <QIODevice>
 
 #include "pages/configurationpage.h"
 #include "pages/generalpage.h"
@@ -20,6 +22,29 @@
 
 MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), config(Config::load()), offlineLauncher(config){
     setWindowTitle(QStringLiteral("Lunar Client Qt"));
+    static QString icon = QStringLiteral("icon.ico");
+    if (QFile::exists(icon))
+        setWindowIcon(QIcon(icon));
+    else {
+        QString lcloc =
+#if defined(Q_OS_WIN)
+            QStandardPaths::writableLocation(QStandardPaths::GenericConfigLocation) + QStringLiteral("/Programs/lunarclient/Lunar Client.exe");
+#elif defined(Q_OS_DARWIN)
+            QStandardPaths::writableLocation(QStandardPaths::AppDataLocation) + "/lunarclient/Lunar Client"; //Need location
+#else
+            QDir::homePath() + "/lunarclient/Lunar Client"; // Need location
+#endif
+        QFileInfo fin(lcloc);
+        QFileSystemModel* model = new QFileSystemModel;
+        QIcon ic = model->fileIcon(model->index(fin.filePath()));
+        setWindowIcon(ic);
+        QPixmap pixmap = ic.pixmap(ic.actualSize(QSize(128, 128)));
+        QFile file = QFile(icon);
+        file.open(QIODevice::WriteOnly);
+        pixmap.save(&file, "ICO");
+    }
+    
+
     QWidget* centralWidget = new QWidget();
 
     QGridLayout* mainLayout = new QGridLayout();
