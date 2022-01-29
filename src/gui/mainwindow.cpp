@@ -39,7 +39,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), config(Config::lo
         QIcon ic = model->fileIcon(model->index(fin.filePath()));
         setWindowIcon(ic);
         QPixmap pixmap = ic.pixmap(ic.actualSize(QSize(128, 128)));
-        QFile file = QFile(icon);
+        QFile file(icon);
         file.open(QIODevice::WriteOnly);
         pixmap.save(&file, "ICO");
     }
