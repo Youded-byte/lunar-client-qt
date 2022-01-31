@@ -35,7 +35,7 @@ void OfflineLauncher::launch() {
     QStringList args{
          "--add-modules", "jdk.naming.dns",
          "--add-exports", "jdk.naming.dns/com.sun.jndi.dns=java.naming",
-         "-Djna.boot.library.path=natives",
+         "-Djna.boot.library.path=natives", "-Dlog4j2.formatMsgNoLookups=true"
          "--add-opens", "java.base/java.io=ALL-UNNAMED",
          QString("-Xms%1m").arg(config.initialMemory),
          QString("-Xmx%1m").arg(config.maximumMemory),
@@ -84,7 +84,7 @@ void OfflineLauncher::launch() {
             "--assetIndex", config.gameVersion == QStringLiteral("1.7") ? "1.7.10" : config.gameVersion,
             "--userProperties", "{}",
             "--gameDir", config.useCustomMinecraftDir ? config.customMinecraftDir : minecraftDir,
-            "--launcherVersion", "2.9.3",
+            "--launcherVersion", "2.9.4",
             "--width", QString::number(config.windowWidth),
             "--height", QString::number(config.windowHeight)
     };
