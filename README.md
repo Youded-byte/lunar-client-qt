@@ -10,7 +10,8 @@ Add me on discord: nils#5281 if you have any questions or thoughts about the pro
 One of the primary features of this launcher is the ability to easily attach java premain agents to your game, 
 this allows you to modify the game on launch which lets you write modifications that won't break when lunar recieves an update. 
   
-Here's a repository containing some useful java agents that you might want to use: https://github.com/Nilsen84/lunar-client-agents  
+Here's a repository containing some useful java agents that you might want to use: https://github.com/Nilsen84/lunar-client-agents 
+and https://github.com/Youded-byte/youded-lunar-client-agents.
 If you're familiar with java bytecode feel free to write your own!
 
 ## Launching without launcher
