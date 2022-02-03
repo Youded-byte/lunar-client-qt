@@ -37,9 +37,6 @@ void Config::save() {
     saveObj["joinServerOnLaunch"] = joinServerOnLaunch;
     saveObj["serverIp"] = serverIp;
 
-    saveObj["useNickHiderName"] = useNickHiderName;
-    saveObj["nickHiderName"] = nickHiderName;
-
     saveObj["useLevelHeadPrefix"] = useLevelHeadPrefix;
     saveObj["levelHeadPrefix"] = levelHeadPrefix;
 
@@ -111,8 +108,6 @@ Config Config::load() {
         jsonObj["customMinecraftDir"].toString(),
         jsonObj["joinServerOnLaunch"].toBool(false),
         jsonObj["serverIp"].toString(),
-        jsonObj["useNickHiderName"].toBool(false),
-        jsonObj["nickHiderName"].toString(),
         jsonObj["useAutoggMessage"].toBool(false),
         jsonObj["autoggMessage"].toString(),
         jsonObj["useLevelHeadPrefix"].toBool(false),

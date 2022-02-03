@@ -66,12 +66,6 @@ void OfflineLauncher::launch() {
                 getLevelHeadOptions(config.useLevelHeadPrefix, config.levelHeadPrefix, config.useLevelHeadNick, QString::number(config.levelHeadNickLevel))
                 );
 
-    if(config.useNickHiderName)
-        args << getAgentFlags(
-                QTemporaryFile::createNativeFile(":/res/CustomNickHider.jar")->fileName(),
-                config.nickHiderName
-                );
-
     if(config.useCosmetics && config.unlockCosmetics)
         args << "-javaagent:" + QTemporaryFile::createNativeFile(":/res/UnlockedCosmetics.jar")->fileName();
 
