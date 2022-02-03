@@ -70,8 +70,10 @@ MinecraftPage::MinecraftPage(Config &config, QWidget *parent) : ConfigurationPag
     betterHurtCamValue->setMaximum(36);
     betterHurtCamValue->setPageStep(1);
     useBetterHurtCam = new QCheckBox(QStringLiteral("Better Hurtcam"));
+    betterHurtCamLabel->setDisabled(true);
+    betterHurtCamLabel->setText("BetterHurtCam Value:  " + QString::number(betterHurtCamValue->value()));
     connect(betterHurtCamValue, &QSlider::valueChanged, [betterHurtCamLabel](double val) {betterHurtCamLabel->setText("BetterHurtCam Value:  " + QString::number(val)); });
-    connect(useBetterHurtCam, &QCheckBox::toggled, useBetterHurtCam, &QCheckBox::setEnabled);
+    connect(useBetterHurtCam, &QCheckBox::toggled, betterHurtCamLabel, &QLabel::setEnabled);
     betterHurtCamContainer->addWidget(useBetterHurtCam);
     betterHurtCamContainer->addWidget(betterHurtCamLabel, 0, Qt::AlignHCenter);
     betterHurtCamContainer->setSpacing(18);
