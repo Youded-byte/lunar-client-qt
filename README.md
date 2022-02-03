@@ -10,7 +10,7 @@ Add me on discord: nils#5281 if you have any questions or thoughts about the pro
 One of the primary features of this launcher is the ability to easily attach java premain agents to your game, 
 this allows you to modify the game on launch which lets you write modifications that won't break when lunar recieves an update. 
   
-Here's a repository containing some useful java agents that you might want to use: https://github.com/Nilsen84/lunar-client-agents 
+Here are repositories containing some useful java agents that you might want to use: https://github.com/Nilsen84/lunar-client-agents 
 and https://github.com/Youded-byte/youded-lunar-client-agents.
 If you're familiar with java bytecode feel free to write your own!
 
@@ -24,7 +24,7 @@ It is common for people to use external programs to enhance their minecraft expe
 programs using JNI to interact with minecraft's JVM. This launcher includes built-in support to launch such programs alongside lunar client.
 
 ## Build instructions
-Make sure you have Qt6 and CMake 3.16+ installed. 
+Make sure you have Qt6 or Qt5 and CMake 3.16+ installed. 
 ```
 git clone https://github.com/Nilsen84/lunar-client-qt.git
 cd lunar-client-qt
