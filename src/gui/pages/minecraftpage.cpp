@@ -34,9 +34,11 @@ MinecraftPage::MinecraftPage(Config &config, QWidget *parent) : ConfigurationPag
     levelHeadPrefix = new QLineEdit();
     levelHeadPrefix->setPlaceholderText(QStringLiteral("Level: "));
 
-    useLevelHeadNick = new QCheckBox(QStringLiteral("LevelHead Nick Level"));
+    useLevelHeadNick = new QCheckBox(QStringLiteral("LevelHead Nick Level (No level is shown with -1)"));
     levelHeadNickLevel = new QLineEdit();
     levelHeadNickLevel->setPlaceholderText(QString::number(-1));
+
+    
 
 
     useCosmetics = new QCheckBox(QStringLiteral("Enable Cosmetics"));
@@ -59,6 +61,21 @@ MinecraftPage::MinecraftPage(Config &config, QWidget *parent) : ConfigurationPag
     windowResContainer->addWidget(windowWidth, 1);
     windowResContainer->addWidget(new QLabel(QStringLiteral("Window Height")));
     windowResContainer->addWidget(windowHeight, 1);
+
+
+    QHBoxLayout* betterHurtCamContainer = new QHBoxLayout();
+    QLabel* betterHurtCamLabel = new QLabel();
+    betterHurtCamValue = new QSlider(Qt::Horizontal);
+    betterHurtCamValue->setMinimum(0);
+    betterHurtCamValue->setMaximum(36);
+    betterHurtCamValue->setPageStep(1);
+    useBetterHurtCam = new QCheckBox(QStringLiteral("Better Hurtcam"));
+    connect(betterHurtCamValue, &QSlider::valueChanged, [betterHurtCamLabel](double val) {betterHurtCamLabel->setText("BetterHurtCam Value:  " + QString::number(val)); });
+    connect(useBetterHurtCam, &QCheckBox::toggled, useBetterHurtCam, &QCheckBox::setEnabled);
+    betterHurtCamContainer->addWidget(useBetterHurtCam);
+    betterHurtCamContainer->addWidget(betterHurtCamLabel, 0, Qt::AlignHCenter);
+    betterHurtCamContainer->setSpacing(18);
+    betterHurtCamContainer->addWidget(betterHurtCamValue);
         
     QVBoxLayout* mainLayout = new QVBoxLayout();
     mainLayout->setSpacing(40);
@@ -71,7 +88,9 @@ MinecraftPage::MinecraftPage(Config &config, QWidget *parent) : ConfigurationPag
     QHBoxLayout* h2Layout = new QHBoxLayout;
     h2Layout->addLayout(WidgetUtils::createOptional(useLevelHeadPrefix, levelHeadPrefix));
     h2Layout->addLayout(WidgetUtils::createOptional(useLevelHeadNick, levelHeadNickLevel));
+    //mainLayout->addLayout(WidgetUtils::createOptional(useBetterHurtCam, betterHurtCamLabel));
     mainLayout->addLayout(h2Layout);
+    mainLayout->addLayout(betterHurtCamContainer);
     mainLayout->addWidget(useCosmetics, 1, Qt::AlignHCenter);
     mainLayout->addWidget(unlockCosmetics, 0, Qt::AlignCenter);
     mainLayout->addStretch(1);
@@ -100,6 +119,9 @@ void MinecraftPage::apply() {
     config.useLevelHeadNick = useLevelHeadNick->isChecked();
     config.levelHeadNickLevel = levelHeadNickLevel->text().toInt();
 
+    config.useBetterHurtCam = useBetterHurtCam->isChecked();
+    config.betterHurtCamValue = (double)betterHurtCamValue->value();
+
     config.useAutoggMessage = useAutoggMessage->isChecked();
     config.autoggMessage = autoggMessage->text();
 
@@ -122,6 +144,9 @@ void MinecraftPage::load() {
 
     useLevelHeadNick->setChecked(config.useLevelHeadNick);
     levelHeadNickLevel->setText(QString::number(config.levelHeadNickLevel));
+
+    useBetterHurtCam->setChecked(config.useBetterHurtCam);
+    betterHurtCamValue->setValue(config.betterHurtCamValue);
 
     useAutoggMessage->setChecked(config.useAutoggMessage);
     autoggMessage->setText(config.autoggMessage);

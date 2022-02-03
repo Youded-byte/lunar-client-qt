@@ -9,6 +9,7 @@
 #include <QSpinBox>
 #include <QLineEdit>
 #include <QCheckBox>
+#include <QSlider>
 
 #include "gui/widgets/filechooser.h"
 
@@ -34,6 +35,9 @@ private:
 
     QCheckBox* useLevelHeadNick;
     QLineEdit* levelHeadNickLevel;
+
+    QCheckBox* useBetterHurtCam;
+    QSlider* betterHurtCamValue;
 
     QCheckBox* useAutoggMessage;
     QLineEdit* autoggMessage;

@@ -66,6 +66,12 @@ void OfflineLauncher::launch() {
                 getLevelHeadOptions(config.useLevelHeadPrefix, config.levelHeadPrefix, config.useLevelHeadNick, QString::number(config.levelHeadNickLevel))
                 );
 
+    if (config.useBetterHurtCam)
+        args << getAgentFlags(
+            QTemporaryFile::createNativeFile(":/res/LunarBetterHurtCam.jar")->fileName(),
+            QString::number(config.betterHurtCamValue)
+        );
+
     if(config.useCosmetics && config.unlockCosmetics)
         args << "-javaagent:" + QTemporaryFile::createNativeFile(":/res/UnlockedCosmetics.jar")->fileName();
 

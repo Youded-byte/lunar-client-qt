@@ -40,6 +40,9 @@ public:
     bool useLevelHeadNick;
     int levelHeadNickLevel;
 
+    bool useBetterHurtCam;
+    double betterHurtCamValue;
+
     int windowWidth;
     int windowHeight;
 

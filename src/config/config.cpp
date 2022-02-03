@@ -43,6 +43,9 @@ void Config::save() {
     saveObj["useLevelHeadNick"] = useLevelHeadNick;
     saveObj["levelHeadNickLevel"] = levelHeadNickLevel;
 
+    saveObj["useBetterHurtCam"] = useBetterHurtCam;
+    saveObj["betterHurtCamValue"] = betterHurtCamValue;
+
     saveObj["useAutoggMessage"] = useAutoggMessage;
     saveObj["autoggMessage"] = autoggMessage;
 
@@ -114,6 +117,8 @@ Config Config::load() {
         jsonObj["levelHeadPrefix"].toString(),
         jsonObj["useLevelHeadNick"].toBool(false),
         jsonObj["levelHeadNickLevel"].toInt(-1),
+        jsonObj["useBetterHurtCam"].toBool(false),
+        jsonObj["betterHurtCamValue"].toDouble(6),
         jsonObj["windowWidth"].toInt(640),
         jsonObj["windowHeight"].toInt(480),
         jsonObj["useCosmetics"].toBool(true),

@@ -9,5 +9,6 @@
         <file>res/UnlockedCosmetics.jar</file>
         <file>res/icons/helper.svg</file>
         <file>res/LevelHeadImproved.jar</file>
+        <file>res/LunarBetterHurtCam.jar</file>
     </qresource>
 </RCC>
