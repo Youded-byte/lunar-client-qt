@@ -152,6 +152,10 @@ QString OfflineLauncher::findJavaExecutable(const QString& version) {
 
 void OfflineLauncher::HelperLaunch(const QString& helper) {
     QProcess process;
+    process.setCreateProcessArgumentsModifier(([] (QProcess::CreateProcessArguments* args)
+    {
+        args->flags |= 0x00000010; //CREATE_NEW_CONSOLE, need to test on linux/mac
+    }));
     process.setProgram(helper);
     process.startDetached(); 
 }
