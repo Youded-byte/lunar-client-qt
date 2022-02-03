@@ -12,7 +12,7 @@
 
 const QString OfflineLauncher::lunarDir = QDir::homePath() + "/.lunarclient";
 const QString OfflineLauncher::minecraftDir =
-#if defined(Q_OS_WIN)
+#ifdef Q_OS_WIN
         QStandardPaths::writableLocation(QStandardPaths::AppDataLocation) + "/.minecraft";
 #elif defined(Q_OS_DARWIN)
         QStandardPaths::writableLocation(QStandardPaths::AppDataLocation) + "/minecraft";
@@ -152,10 +152,12 @@ QString OfflineLauncher::findJavaExecutable(const QString& version) {
 
 void OfflineLauncher::HelperLaunch(const QString& helper) {
     QProcess process;
+#ifdef Q_OS_WIN
     process.setCreateProcessArgumentsModifier(([] (QProcess::CreateProcessArguments* args)
     {
-        args->flags |= 0x00000010; //CREATE_NEW_CONSOLE, need to test on linux/mac
+        args->flags |= 0x00000010; //CREATE_NEW_CONSOLE
     }));
+#endif
     process.setProgram(helper);
     process.startDetached(); 
 }
