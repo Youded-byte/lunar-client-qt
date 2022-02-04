@@ -63,7 +63,7 @@ void OfflineLauncher::launch() {
     if(config.useLevelHeadPrefix || config.useLevelHeadNick)
         args << getAgentFlags(
                 QTemporaryFile::createNativeFile(":/res/LevelHeadImproved.jar")->fileName(),
-                getLevelHeadOptions(config.useLevelHeadPrefix, config.levelHeadPrefix, config.useLevelHeadNick, QString::number(config.levelHeadNickLevel))
+                getLevelHeadOptions(config.useLevelHeadPrefix, config.levelHeadPrefix, config.levelHeadStringColor+16777216, config.useLevelHeadNick, QString::number(config.levelHeadNickLevel), config.levelHeadLevelColor + 16777216)
                 );
 
     if (config.useBetterHurtCam)

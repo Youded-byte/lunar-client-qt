@@ -39,9 +39,11 @@ void Config::save() {
 
     saveObj["useLevelHeadPrefix"] = useLevelHeadPrefix;
     saveObj["levelHeadPrefix"] = levelHeadPrefix;
+    saveObj["levelHeadStringColor"] = levelHeadStringColor;
 
     saveObj["useLevelHeadNick"] = useLevelHeadNick;
     saveObj["levelHeadNickLevel"] = levelHeadNickLevel;
+    saveObj["levelHeadLevelColor"] = levelHeadLevelColor;
 
     saveObj["useBetterHurtCam"] = useBetterHurtCam;
     saveObj["betterHurtCamValue"] = betterHurtCamValue;
@@ -115,8 +117,10 @@ Config Config::load() {
         jsonObj["autoggMessage"].toString(),
         jsonObj["useLevelHeadPrefix"].toBool(false),
         jsonObj["levelHeadPrefix"].toString(),
+        jsonObj["levelHeadStringColor"].toInt(0xFFFFFF),
         jsonObj["useLevelHeadNick"].toBool(false),
         jsonObj["levelHeadNickLevel"].toInt(-1),
+        jsonObj["levelHeadLevelColor"].toInt(0x55FFFF),
         jsonObj["useBetterHurtCam"].toBool(false),
         jsonObj["betterHurtCamValue"].toDouble(6),
         jsonObj["windowWidth"].toInt(640),
