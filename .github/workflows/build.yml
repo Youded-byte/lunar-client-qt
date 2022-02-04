@@ -1,8 +1,10 @@
-name: Build
+name: Build and Release
 
 on:
   push:
     branches: [ master ]
+    tags:
+      - "v*.*.*"
   pull_request:
     branches: [ master ]
   workflow_dispatch:
@@ -18,9 +20,9 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
-        
-    - name: Install Qt
-      uses: jurplel/install-qt-action@v2
+      
+    - name: Install Qt & MinGW
+      uses: jurplel/install-qt-action@v2.14.0
       with:
         version: '5.15.2'
         host: 'windows'
@@ -33,19 +35,23 @@ jobs:
 
     - name: Build
       run: cmake --build . --config ${{env.BUILD_TYPE}}
-            
+      
     - name: Package Dependencies
       shell: bash
       run: |
-        mkdir with_deps
-        mv lunar-client-qt.exe with_deps/
-        PATH="$IQTA_TOOLS/mingw810_64/bin":$PATH windeployqt with_deps/ --compiler-runtime --no-angle --no-opengl-sw --no-virtualkeyboard --no-webkit2 --no-system-d3d-compiler --no-translations --no-quick-import  
+        mkdir Lunar\ Client\ Qt
+        mv -t Lunar\ Client\ Qt/ lunar-client-qt.exe libs/ agents/
+        PATH="$IQTA_TOOLS/mingw810_64/bin":$PATH windeployqt Lunar\ Client\ Qt/ --compiler-runtime --no-angle --no-opengl-sw --no-virtualkeyboard --no-webkit2 --no-system-d3d-compiler --no-translations --no-quick-import
+
+    - name: Compress
+      shell: powershell
+      run: Compress-Archive -Path 'Lunar Client Qt' -DestinationPath windows.zip
+
     - name: Upload Artifiact
       uses: actions/upload-artifact@v2
       with:
         name: windows
-        path: ./with_deps
-        
+        path: ./windows.zip
   build_mac:
     name: "MacOS Build"
     runs-on: macos-latest
@@ -71,7 +77,7 @@ jobs:
         run: |
           macdeployqt lunar-client-qt.app
           
-      - name: Compress into tar
+      - name: Compress
         run: |
           tar -czvf mac.tar.gz lunar-client-qt.app
           
@@ -80,7 +86,8 @@ jobs:
           name: mac
           path: ./mac.tar.gz
           
-  arch_build:
+          
+  build_arch:
     name: "Arch Linux Build"
     
     runs-on: ubuntu-latest
@@ -88,66 +95,50 @@ jobs:
     
     steps: 
       - uses: actions/checkout@v2
-
+      
       - name: Install Packages
         run: |
           pacman -Syu --noconfirm qt6-base qt6-svg cmake base-devel
           
       - name: Configure CMake
         run: cmake . -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}}
-       
+        
       - name: Build
         run: make
-        
+
+      - name: Compress
+        run: |
+          mkdir linux
+          mv -t linux/ lunar-client-qt libs/ agents/
+          tar czvf linux.tar.gz linux/
+
       - uses: actions/upload-artifact@v2
         with:
           name: linux
-          path: ./lunar-client-qt
-  
-  ubuntu_build:
-    name: "Ubuntu Linux Build"
-    
-    runs-on: ubuntu-18.04
+          path: ./linux.tar.gz
+
+  create_release:
+    name: "Create Release"
+    needs: [build_windows, build_mac, build_arch]
+    if: startsWith(github.ref, 'refs/tags/v')
+
+    runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
-      - name: Install Qt
-        uses: jurplel/install-qt-action@v2
-        with:
-          install-deps: 'true'
-          modules: 'qtwidget qtgui qtsvg qtnetwork'
-          setup-python: 'false'
-        
-      - name: Install linuxdeployqt
-        run: |
-          curl -L -A "Internet Explorer" -o linuxdeployqt.AppImage https://github.com/probonopd/linuxdeployqt/releases/download/continuous/linuxdeployqt-continuous-x86_64.AppImage
-          chmod a+x ./linuxdeployqt.AppImage
-          
-      - name: Configure CMake
-        run: cmake . -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}}
-       
-      - name: Build
-        run: make
-          
-      - name: Package Dependencies
-        run: |
-          mkdir AppDir
-          mkdir ./AppDir/bin
-          mkdir ./AppDir/lib
-          mkdir ./AppDir/share
-          mkdir ./AppDir/share/applications
-          mkdir ./AppDir/share/icons
-          mkdir ./AppDir/share/icons/foo
-          mkdir ./AppDir/share/icons/foo/256
-          touch ./AppDir/share/icons/foo/256/foo.png
-          echo -e '[Desktop Entry]\nType=Application\nName=lunar-client-qt\nComment=lunar client qt\nExec=lunar-client-qt\nIcon=foo\nCategories=Game;' > ./AppDir/share/applications/lunar-client-qt.desktop
-          mv lunar-client-qt AppDir/bin/
-          ./linuxdeployqt.AppImage ./AppDir/share/applications/lunar-client-qt.desktop -appimage
-          rm ./linuxdeployqt.AppImage
-          mkdir executablefile
-          mv *.AppImage executablefile
-        
-      - uses: actions/upload-artifact@v2
-        with:
-          name: linux-appimage
-          path: ./executablefile
-    
+    - name: Checkout
+      uses: actions/checkout@v2
+
+    - name: Download Builds
+      if: startsWith(github.ref, 'refs/tags/v')
+      uses: actions/download-artifact@v2.1.0
+
+    - name: Create Release
+      if: startsWith(github.ref, 'refs/tags/v')
+      uses: softprops/action-gh-release@v0.1.14
+      with:
+        draft: true
+        fail_on_unmatched_files: true
+        files: |
+          linux/linux.tar.gz
+          mac/mac.tar.gz
+          windows/windows.zip
+  

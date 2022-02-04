@@ -10,6 +10,8 @@
 #include <QStandardPaths>
 #include <QTemporaryFile>
 
+#include "utils.h"
+
 const QString OfflineLauncher::lunarDir = QDir::homePath() + "/.lunarclient";
 const QString OfflineLauncher::minecraftDir =
 #ifdef Q_OS_WIN
@@ -47,33 +49,27 @@ void OfflineLauncher::launch() {
                     "lunar-assets-prod-1-optifine.jar",
                     "lunar-assets-prod-2-optifine.jar",
                     "lunar-assets-prod-3-optifine.jar",
-                    "OptiFine.jar"
+                    "OptiFine.jar",
+
+                    Utils::getLibsDirectory() + QDir::separator() + '*'
         }).join(QDir::listSeparator())
     };
 
     foreach(const QString& path, config.agents)
         args << "-javaagent:" + path;
 
-    if(config.useAutoggMessage)
-        args << getAgentFlags(
-                QTemporaryFile::createNativeFile(":/res/CustomAutoGG.jar")->fileName(),
-                config.autoggMessage
-                );
 
     if(config.useLevelHeadPrefix || config.useLevelHeadNick)
-        args << getAgentFlags(
-                QTemporaryFile::createNativeFile(":/res/LevelHeadImproved.jar")->fileName(),
-                getLevelHeadOptions(config.useLevelHeadPrefix, config.levelHeadPrefix, config.useLevelHeadNick, QString::number(config.levelHeadNickLevel))
-                );
+        args << Utils::getAgentFlags("LevelHeadImproved.jar", getLevelHeadOptions(config.useLevelHeadPrefix, config.levelHeadPrefix, config.useLevelHeadNick, QString::number(config.levelHeadNickLevel)));
+
+    if(config.useAutoggMessage)
+        args << Utils::getAgentFlags("CustomAutoGG.jar", config.autoggMessage);
 
     if (config.useBetterHurtCam)
-        args << getAgentFlags(
-            QTemporaryFile::createNativeFile(":/res/LunarBetterHurtCam.jar")->fileName(),
-            QString::number(config.betterHurtCamValue)
-        );
+        args << Utils::getAgentFlags("LunarBetterHurtCam.jar", QString::number(config.betterHurtCamValue));
 
     if(config.useCosmetics && config.unlockCosmetics)
-        args << "-javaagent:" + QTemporaryFile::createNativeFile(":/res/UnlockedCosmetics.jar")->fileName();
+        args << Utils::getAgentFlags("UnlockCosmetics.jar");
 
     args << QProcess::splitCommand(config.jvmArgs);
 

@@ -8,19 +8,21 @@ set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTORCC ON)
 set(CMAKE_AUTOUIC ON)
 
+
+set(QT_COMPONENTS Core Gui Widgets Svg)
+
+
 find_package(Qt6 COMPONENTS
-        Core
-        Gui
-        Widgets
-        Svg)
+        ${QT_COMPONENTS}
+        )
 if (NOT Qt6_FOUND)
     find_package(Qt5 COMPONENTS
-            Core
-            Gui
-            Widgets
-            Svg
+            ${QT_COMPONENTS}
             REQUIRED
             )
+    set(QT_VER Qt5)
+else()
+set(QT_VER Qt6)
 endif()
 
 set(SOURCE_FILES
@@ -46,20 +48,49 @@ set(SOURCE_FILES
         src/gui/widgets/filechooser.cpp
         src/gui/widgets/filechooser.h 
         src/gui/widgets/widgetutils.cpp 
-        src/gui/widgets/filechooser.h
-        src/gui/widgets/widgetutils.cpp
-        src/gui/widgets/widgetutils.h)
+        src/gui/widgets/widgetutils.h src/utils.cpp src/utils.h)
 
-add_executable(lunar-client-qt ${SOURCE_FILES} ${LIB_SRC} res.qrc)
-target_link_libraries(lunar-client-qt
-        Qt::Core
-        Qt::Gui
-        Qt::Widgets
-        Qt::Svg
+add_executable(lunar-client-qt WIN32 MACOSX_BUNDLE ${SOURCE_FILES} ${LIB_SRC} res.qrc)
+
+if(UNIX AND APPLE)
+    set(JAR_DEST_DIR ${CMAKE_BINARY_DIR}/lunar-client-qt.app/Contents/MacOS)
+else()
+    set(JAR_DEST_DIR ${CMAKE_BINARY_DIR})
+endif()
+
+function(COPY_JARS DIR OUTPUT_LIST)
+    add_custom_command(
+            OUTPUT "${JAR_DEST_DIR}/${DIR}/"
+            COMMAND ${CMAKE_COMMAND} -E make_directory ${JAR_DEST_DIR}/${DIR}/
+    )
+
+    set(COPIED_FILES "${JAR_DEST_DIR}/${DIR}/")
+
+    file(GLOB JARS ${CMAKE_SOURCE_DIR}/java/${DIR}/*.jar)
+
+    foreach(JAR ${JARS})
+        get_filename_component(FILE_NAME ${JAR} NAME)
+        add_custom_command(
+                OUTPUT "${JAR_DEST_DIR}/${DIR}/${FILE_NAME}"
+                COMMAND ${CMAKE_COMMAND} -E copy_if_different
+                ${JAR} ${JAR_DEST_DIR}/${DIR}/
+                DEPENDS ${JAR}
+                COMMENT "Copying ${FILE_NAME}"
         )
+        list(APPEND COPIED_FILES ${JAR_DEST_DIR}/${DIR}/${FILE_NAME})
+    endforeach()
+
+    set(${OUTPUT_LIST} ${COPIED_FILES} PARENT_SCOPE)
+endfunction()
+
+copy_jars(agents COPIED_AGENTS)
+copy_jars(libs COPIED_LIBRARIES)
+
+add_custom_target(CopyJars ALL COMMAND DEPENDS ${COPIED_AGENTS} ${COPIED_LIBRARIES})
+add_dependencies(lunar-client-qt CopyJars)
+
+list(TRANSFORM QT_COMPONENTS PREPEND ${QT_VER}:: OUTPUT_VARIABLE QT_LIBS)
+
+target_link_libraries(lunar-client-qt ${QT_LIBS})
 
 target_include_directories(lunar-client-qt PRIVATE src)
-
-# Removes the console window on windows and macos respectively
-set_property(TARGET lunar-client-qt PROPERTY WIN32_EXECUTABLE true)
-set_property(TARGET lunar-client-qt PROPERTY MACOSX_BUNDLE true)
