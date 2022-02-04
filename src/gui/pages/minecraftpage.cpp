@@ -6,7 +6,6 @@
 
 #include <QHBoxLayout>
 #include <QLabel>
-#include <QColorDialog>
 #include <gui/widgets/widgetutils.h>
 
 MinecraftPage::MinecraftPage(Config &config, QWidget *parent) : ConfigurationPage(config, parent) {
@@ -34,12 +33,6 @@ MinecraftPage::MinecraftPage(Config &config, QWidget *parent) : ConfigurationPag
     useLevelHeadPrefix = new QCheckBox(QStringLiteral("LevelHead Prefix"));
     levelHeadPrefix = new QLineEdit();
     levelHeadPrefix->setPlaceholderText(QStringLiteral("Level: "));
-    levelHeadStringColor = new QColorDialog(nullptr); 
-    levelHeadStringColorButton = new QPushButton(QStringLiteral("Color"));
-    connect(levelHeadStringColorButton, &QPushButton::clicked, levelHeadStringColor, &QColorDialog::exec);
-    levelHeadLevelColor = new QColorDialog(nullptr);
-    levelHeadLevelColorButton = new QPushButton(QStringLiteral("Color"));
-    connect(levelHeadLevelColorButton, &QPushButton::clicked, levelHeadLevelColor, &QColorDialog::exec);
 
     useLevelHeadNick = new QCheckBox(QStringLiteral("LevelHead Nick Level (No level is shown with -1)"));
     levelHeadNickLevel = new QLineEdit();
@@ -95,17 +88,9 @@ MinecraftPage::MinecraftPage(Config &config, QWidget *parent) : ConfigurationPag
     hLayout->addLayout(WidgetUtils::createOptional(useAutoggMessage, autoggMessage));
     mainLayout->addLayout(hLayout);
     QHBoxLayout* h2Layout = new QHBoxLayout;
-    h2Layout->addStretch();
     h2Layout->addLayout(WidgetUtils::createOptional(useLevelHeadPrefix, levelHeadPrefix));
-    h2Layout->setSpacing(8);
-    h2Layout->addWidget(levelHeadStringColorButton);
-    h2Layout->addStretch();
-    h2Layout->setSpacing(36);
-    h2Layout->addStretch();
     h2Layout->addLayout(WidgetUtils::createOptional(useLevelHeadNick, levelHeadNickLevel));
-    h2Layout->setSpacing(8);
-    h2Layout->addWidget(levelHeadLevelColorButton);
-    h2Layout->addStretch();
+    //mainLayout->addLayout(WidgetUtils::createOptional(useBetterHurtCam, betterHurtCamLabel));
     mainLayout->addLayout(h2Layout);
     mainLayout->addLayout(betterHurtCamContainer);
     mainLayout->addWidget(useCosmetics, 1, Qt::AlignHCenter);
@@ -132,11 +117,9 @@ void MinecraftPage::apply() {
 
     config.useLevelHeadPrefix = useLevelHeadPrefix->isChecked();
     config.levelHeadPrefix = levelHeadPrefix->text();
-    config.levelHeadStringColor = levelHeadStringColor->selectedColor().rgb();
 
     config.useLevelHeadNick = useLevelHeadNick->isChecked();
     config.levelHeadNickLevel = levelHeadNickLevel->text().toInt();
-    config.levelHeadLevelColor = levelHeadLevelColor->selectedColor().rgb();
 
     config.useBetterHurtCam = useBetterHurtCam->isChecked();
     config.betterHurtCamValue = (double)betterHurtCamValue->value();
@@ -160,11 +143,9 @@ void MinecraftPage::load() {
 
     useLevelHeadPrefix->setChecked(config.useLevelHeadPrefix);
     levelHeadPrefix->setText(config.levelHeadPrefix);
-    levelHeadStringColor->setCurrentColor(QColor::fromRgb(config.levelHeadStringColor));
 
     useLevelHeadNick->setChecked(config.useLevelHeadNick);
     levelHeadNickLevel->setText(QString::number(config.levelHeadNickLevel));
-    levelHeadLevelColor->setCurrentColor(QColor::fromRgb(config.levelHeadLevelColor));
 
     useBetterHurtCam->setChecked(config.useBetterHurtCam);
     betterHurtCamValue->setValue(config.betterHurtCamValue);

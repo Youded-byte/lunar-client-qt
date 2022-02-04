@@ -36,11 +36,9 @@ public:
 
     bool useLevelHeadPrefix;
     QString levelHeadPrefix;
-    int levelHeadStringColor;
 
     bool useLevelHeadNick;
     int levelHeadNickLevel;
-    int levelHeadLevelColor;
 
     bool useBetterHurtCam;
     double betterHurtCamValue;

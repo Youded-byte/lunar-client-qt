@@ -10,7 +10,6 @@
 #include <QLineEdit>
 #include <QCheckBox>
 #include <QSlider>
-#include <QColorDialog>
 
 #include "gui/widgets/filechooser.h"
 
@@ -33,13 +32,9 @@ private:
 
     QCheckBox* useLevelHeadPrefix;
     QLineEdit* levelHeadPrefix;
-    QColorDialog* levelHeadStringColor;
-    QPushButton* levelHeadStringColorButton;
 
     QCheckBox* useLevelHeadNick;
     QLineEdit* levelHeadNickLevel;
-    QColorDialog* levelHeadLevelColor;
-    QPushButton* levelHeadLevelColorButton;
 
     QCheckBox* useBetterHurtCam;
     QSlider* betterHurtCamValue;

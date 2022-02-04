@@ -12,10 +12,10 @@ QString Launcher::getAgentFlags(const QString &path, const QString &options) {
         .arg(path,  options);
 }
 
-QString Launcher::getLevelHeadOptions(const bool& uselevelheadprefix, const QString& levelheadprefix, const int levelheadstringcolor, const bool& uselevelheadnicklevel, const QString& levelheadnicklevel, const int levelheadlevelcolor) {
+QString Launcher::getLevelHeadOptions(const bool& uselevelheadprefix, const QString& levelheadprefix, const bool& uselevelheadnicklevel, const QString& levelheadnicklevel) {
     if (!uselevelheadprefix && uselevelheadnicklevel)
-        return QStringLiteral("Level: ") + QStringLiteral("@") + QString::number(levelheadstringcolor) + QStringLiteral("@") + QString::number(levelheadlevelcolor) + QStringLiteral("@") + levelheadnicklevel;
+        return QStringLiteral("@") + levelheadnicklevel;
     else if (!uselevelheadnicklevel && uselevelheadprefix)
-        return levelheadprefix + QStringLiteral("@") + QString::number(levelheadstringcolor) + QStringLiteral("@") + QString::number(levelheadlevelcolor) + QStringLiteral("@") + QStringLiteral("-1");
-    else return levelheadprefix + QStringLiteral("@") + QString::number(levelheadstringcolor) + QStringLiteral("@") + QString::number(levelheadlevelcolor) + QStringLiteral("@") + levelheadnicklevel;
+        return levelheadnicklevel;
+    else return levelheadprefix + "@" + levelheadnicklevel;
 };

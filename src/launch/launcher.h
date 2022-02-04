@@ -17,7 +17,7 @@ public:
     virtual void launch() = 0;
 
     static QString getAgentFlags(const QString& path, const QString& options);
-    static QString getLevelHeadOptions(const bool& uselevelheadprefix, const QString& levelheadprefix, const int levelheadstringcolor, const bool& uselevelheadnicklevel, const QString& levelheadnicklevel, const int levelheadlevelcolor);
+    static QString getLevelHeadOptions(const bool& uselevelheadprefix, const QString& levelheadprefix, const bool& uselevelheadnicklevel, const QString& levelheadnicklevel);
 protected:
     const Config& config;
 };
