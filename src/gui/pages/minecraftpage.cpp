@@ -132,11 +132,13 @@ void MinecraftPage::apply() {
 
     config.useLevelHeadPrefix = useLevelHeadPrefix->isChecked();
     config.levelHeadPrefix = levelHeadPrefix->text();
-    config.levelHeadStringColor = levelHeadStringColor->selectedColor().rgb();
+    if(levelHeadStringColor->selectedColor().isValid())
+        config.levelHeadStringColor = levelHeadStringColor->selectedColor().rgb();
 
     config.useLevelHeadNick = useLevelHeadNick->isChecked();
     config.levelHeadNickLevel = levelHeadNickLevel->text().toInt();
-    config.levelHeadLevelColor = levelHeadLevelColor->selectedColor().rgb();
+    if(levelHeadLevelColor->selectedColor().isValid())
+        config.levelHeadLevelColor = levelHeadLevelColor->selectedColor().rgb();
 
     config.useBetterHurtCam = useBetterHurtCam->isChecked();
     config.betterHurtCamValue = (double)betterHurtCamValue->value();
