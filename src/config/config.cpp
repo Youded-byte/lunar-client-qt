@@ -101,8 +101,8 @@ Config Config::load() {
     return {
         jsonObj["version"].toString("1.8"),
         jsonObj["keepMemorySame"].toBool(true),
-        jsonObj["initialMemory"].toInt(4096),
-        jsonObj["maxMemory"].toInt(4096),
+        jsonObj["initialMemory"].toInt(3072),
+        jsonObj["maxMemory"].toInt(3072),
         jsonObj["useCustomJre"].toBool(false),
         jsonObj["customJrePath"].toString(),
         jsonObj["jvmArgs"].toString(),
