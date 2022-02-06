@@ -59,9 +59,8 @@ public:
     bool useCosmetics;
     bool unlockCosmetics;
 
-    QStringList agents;
-    QStringList helpers;
     QList<Agent> agents;
+    QStringList helpers;
 public:
     void save();
     static Config load();
