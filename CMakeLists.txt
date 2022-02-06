@@ -49,6 +49,22 @@ set(SOURCE_FILES
         src/gui/widgets/filechooser.h 
         src/gui/widgets/widgetutils.cpp 
         src/gui/widgets/widgetutils.h src/utils.cpp src/utils.h)
+        
+set(LCQT_VERSION UNKNOWN)
+find_package(Git)
+if(Git_FOUND)
+    execute_process(
+            COMMAND ${GIT_EXECUTABLE} describe --tag
+            OUTPUT_VARIABLE tag
+    )
+
+    if(tag MATCHES "^v([0-9]+)\\.([0-9]+)\\.([0-9]+)")
+        set(LCQT_VERSION ${CMAKE_MATCH_1}.${CMAKE_MATCH_2}.${CMAKE_MATCH_3})
+    endif()
+endif()
+
+configure_file(${CMAKE_SOURCE_DIR}/version.cpp.in ${CMAKE_BINARY_DIR}/version.cpp @ONLY)
+set(VERSION_FILE ${CMAKE_BINARY_DIR}/version.cpp)
 
 add_executable(lunar-client-qt WIN32 MACOSX_BUNDLE ${SOURCE_FILES} ${VERSION_FILE} res.qrc)
 

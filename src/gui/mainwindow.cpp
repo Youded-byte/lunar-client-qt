@@ -22,7 +22,7 @@
 #include "version.h"
 
 MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), config(Config::load()), offlineLauncher(config){
-    setWindowTitle(QStringLiteral("Lunar Client Qt"));
+    setWindowTitle(QStringLiteral("Lunar Client Qt v") + VERSION);
     static QString icon = QStringLiteral("icon.ico");
     if (QFile::exists(icon))
         setWindowIcon(QIcon(icon));
