@@ -14,7 +14,7 @@ int main(int argc, char *argv[]) {
     parser.addVersionOption();
 
     QCommandLineOption noGuiOption("nogui",
-        QCoreApplication::translate("main", "Launch Lunar Client Qt without GUI. Useful when making a shortcut and uses configurations used previously."));
+        QCoreApplication::translate("main", "Launch Lunar Client Qt without GUI."));
     parser.addOption(noGuiOption);
     parser.process(app);
 
