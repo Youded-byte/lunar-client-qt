@@ -56,8 +56,11 @@ void Config::save() {
     saveObj["windowHeight"] = windowHeight;
 
     QJsonArray arr;
-    foreach(const QString& str, agents){
-        arr.append(str);
+    foreach(const Agent& agent, agents){
+        QJsonObject agentObj;
+        agentObj["path"] = agent.path;
+        agentObj["option"] = agent.option;
+        arr.append(agentObj);
     }
 
     saveObj["agents"] = arr;
@@ -76,12 +79,18 @@ Config Config::load() {
 
     QJsonArray arr = jsonObj["agents"].toArray();
 
-    QStringList agents;
+    QList<Agent> agents;
 
     foreach(const QJsonValue& val, arr){
-        QString path = val.toString();
-        if(QFile::exists(path)){
-            agents.append(path);
+        if(val.isObject()){
+            QJsonObject obj = val.toObject();
+            QString path = obj["path"].toString();
+            if(QFile::exists(path)){
+                agents.append({path, obj["option"].toString({})});
+            }
+        }else{
+            QString path = val.toString();
+            agents.append({path, {}});
         }
     }
 
