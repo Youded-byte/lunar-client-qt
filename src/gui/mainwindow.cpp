@@ -19,6 +19,7 @@
 #include "pages/generalpage.h"
 #include "pages/minecraftpage.h"
 #include "launch/launcher.h"
+#include "version.h"
 
 MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), config(Config::load()), offlineLauncher(config){
     setWindowTitle(QStringLiteral("Lunar Client Qt"));

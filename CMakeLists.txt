@@ -50,7 +50,7 @@ set(SOURCE_FILES
         src/gui/widgets/widgetutils.cpp 
         src/gui/widgets/widgetutils.h src/utils.cpp src/utils.h)
 
-add_executable(lunar-client-qt WIN32 MACOSX_BUNDLE ${SOURCE_FILES} ${LIB_SRC} res.qrc)
+add_executable(lunar-client-qt WIN32 MACOSX_BUNDLE ${SOURCE_FILES} ${VERSION_FILE} res.qrc)
 
 if(UNIX AND APPLE)
     set(JAR_DEST_DIR ${CMAKE_BINARY_DIR}/lunar-client-qt.app/Contents/MacOS)
