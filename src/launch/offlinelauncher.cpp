@@ -9,6 +9,7 @@
 #include <QDirIterator>
 #include <QStandardPaths>
 #include <QTemporaryFile>
+#include <QIODevice>
 
 #include "utils.h"
 
@@ -101,7 +102,7 @@ void OfflineLauncher::launch() {
 
     process.setProcessEnvironment(env);
     process.setWorkingDirectory(lunarDir + "/offline/" + config.gameVersion);
-    process.setStandardOutputFile("latest.log", 0x0008); //QIODeviceBase::Truncate
+    process.setStandardOutputFile("latest.log", QIODevice::Truncate);
 
     if(!process.startDetached()){
         emit error("Failed to start process: " + process.errorString());
