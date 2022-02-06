@@ -9,6 +9,7 @@
 #include <QDirIterator>
 #include <QStandardPaths>
 #include <QTemporaryFile>
+#include <QIODeviceBase>
 
 #include "utils.h"
 
