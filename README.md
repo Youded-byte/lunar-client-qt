@@ -23,6 +23,10 @@ options you have used in the previous launch. It can be added to a shortcut of t
 It is common for people to use external programs to enhance their minecraft experience. These programs range from chat log readers to memory readers and
 programs using JNI to interact with minecraft's JVM. This launcher includes built-in support to launch such programs alongside lunar client.
 
+## Performance Improvements
+This launcher is able to launch lunar client very quickly. The option to disable cosmetics may speed this process up even further. The ability to use
+a custom JRE and JVM arguments opens up more possibilities for performance improvements. You can refer to [this](https://github.com/Youded-byte/Java-Optimisations-MC/blob/main/README.md) for advice.
+
 ## Build instructions
 Make sure you have Qt6 or Qt5 and CMake 3.16+ installed. 
 ```
