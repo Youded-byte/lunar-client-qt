@@ -12,6 +12,7 @@
 #include <QJsonObject>
 #include <QSortFilterProxyModel>
 #include <QFileSystemModel>
+#include <QItemSelectionModel>
 
 #ifndef Q_OS_WIN
 class ExecutableFilter : public QSortFilterProxyModel {
@@ -28,6 +29,21 @@ protected:
 };
 #endif
 
+void HelpersPage::onSelect(const QItemSelection& selected, const QItemSelection& deselected) {
+    QModelIndexList selectedRows = qobject_cast<QItemSelectionModel*>(sender())->selectedRows();
+
+    if (selectedRows.isEmpty()) {
+        remove->setDisabled(true);
+        moveUp->setDisabled(true);
+        moveDown->setDisabled(true);
+    }
+    else {
+        remove->setEnabled(true);
+        moveUp->setEnabled(true);
+        moveDown->setEnabled(true);
+    }
+}
+
 HelpersPage::HelpersPage(Config& config, QWidget *parent) : ConfigurationPage(config, parent) {
     QVBoxLayout* mainLayout = new QVBoxLayout();
     mainLayout->setSpacing(20);
@@ -42,10 +58,16 @@ HelpersPage::HelpersPage(Config& config, QWidget *parent) : ConfigurationPage(co
     palette.setColor(QPalette::Disabled, QPalette::Text, Qt::blue);
     helpers->setPalette(palette);
 
-    QPushButton* add = new QPushButton(QStringLiteral("Add"));
-    QPushButton* remove = new QPushButton(QStringLiteral("Remove"));
-    QPushButton* moveUp = new QPushButton(QStringLiteral("Move Up"));
-    QPushButton* moveDown = new QPushButton(QStringLiteral("Move Down"));
+    add = new QPushButton(QStringLiteral("Add"));
+    remove = new QPushButton(QStringLiteral("Remove"));
+    moveUp = new QPushButton(QStringLiteral("Move Up"));
+    moveDown = new QPushButton(QStringLiteral("Move Down"));
+
+    connect(helpers->selectionModel(), &QItemSelectionModel::selectionChanged, this, &HelpersPage::onSelect);
+
+    remove->setDisabled(true);
+    moveUp->setDisabled(true);
+    moveDown->setDisabled(true);
 
     connect(add, &QPushButton::clicked, [this](){
         QFileDialog dialog(nullptr, QStringLiteral("Open Helper Program"));
