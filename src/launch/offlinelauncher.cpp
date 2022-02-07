@@ -104,6 +104,7 @@ void OfflineLauncher::launch() {
     process.setProcessEnvironment(env);
     process.setWorkingDirectory(lunarDir + "/offline/" + config.gameVersion);
     process.setStandardOutputFile("latest.log", QIODevice::Truncate);
+    process.setStandardErrorFile("error.log", QIODevice::Truncate);
 
     if(!process.startDetached()){
         emit error("Failed to start process: " + process.errorString());
