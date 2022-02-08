@@ -19,6 +19,9 @@ public:
     explicit MinecraftPage(Config& config, QWidget* parent = nullptr);
 
     QString title() override;
+
+    QString description() override;
+
     QIcon icon() override;
 
     void apply() override;

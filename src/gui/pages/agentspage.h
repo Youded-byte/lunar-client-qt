@@ -18,14 +18,15 @@ public:
     explicit AgentsPage(Config& config, QWidget* parent = nullptr);
 
     QString title() override;
+
+    QString description() override;
+
     QIcon icon() override;
 
     void apply() override;
     void load() override;
 private slots:
     void onSelect(const QItemSelection & selected, const QItemSelection & deselected);
-protected:
-    void resizeEvent(QResizeEvent *event) override;
 
 private:
     AgentsModel* model;

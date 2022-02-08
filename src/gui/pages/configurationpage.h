@@ -15,6 +15,7 @@ class ConfigurationPage : public QWidget{
 Q_OBJECT
 public:
     virtual QString title() = 0;
+    virtual QString description() = 0;
 
     virtual QIcon icon() = 0;
 
@@ -22,7 +23,7 @@ public:
     virtual void load() = 0;
 
 protected:
-    explicit ConfigurationPage(Config& config, QWidget* parent);
+    explicit ConfigurationPage(Config& config, QWidget* parent) : config(config), QWidget(parent) {};
 
     Config& config;
 };

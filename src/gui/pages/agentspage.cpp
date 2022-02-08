@@ -38,7 +38,7 @@ AgentsPage::AgentsPage(Config& config, QWidget *parent) : ConfigurationPage(conf
     style->setParent(agents);
     agents->setStyle(style);
     agents->setModel((model = new AgentsModel(config.agents, this)));
-    agents->horizontalHeader()->setSectionResizeMode(0, QHeaderView::Stretch);
+    agents->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
     agents->setAlternatingRowColors(true);
 
 
@@ -137,11 +137,6 @@ void AgentsPage::apply() {
 void AgentsPage::load() {
 }
 
-void AgentsPage::resizeEvent(QResizeEvent *event) {
-    agents->setColumnWidth(Column::OPTION, agents->width() / 3);
-    QWidget::resizeEvent(event);
-}
-
 void AgentsPage::onSelect(const QItemSelection &selected, const QItemSelection &deselected) {
     QModelIndexList selectedRows = qobject_cast<QItemSelectionModel*>(sender())->selectedRows();
 
@@ -154,4 +149,8 @@ void AgentsPage::onSelect(const QItemSelection &selected, const QItemSelection &
         moveUp->setEnabled(true);
         moveDown->setEnabled(true);
     }
+}
+
+QString AgentsPage::description() {
+    return "List of agents you want to use. Don't add any forge/fabric mods or else your game won't start.";
 }

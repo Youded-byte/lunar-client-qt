@@ -159,3 +159,14 @@ void MinecraftPage::load() {
     windowWidth->setValue(config.windowWidth);
     windowHeight->setValue(config.windowHeight);
 }
+
+QString MinecraftPage::description() {
+    return "Minecraft settings.";
+}
+
+
+
+
+
+
+
