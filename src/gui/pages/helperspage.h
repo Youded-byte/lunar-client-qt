@@ -12,6 +12,9 @@ public:
     explicit HelpersPage(Config& config, QWidget* parent = nullptr);
 
     QString title() override;
+
+    QString description() override;
+
     QIcon icon() override;
 
     void apply() override;

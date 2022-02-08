@@ -160,3 +160,7 @@ QStringList HelpersPage::getHelpers() {
     }
     return list;
 }
+
+QString HelpersPage::description() {
+    return "List of helpers you want to use. These are executables such as overlays or programs used alongside Lunar Client.";
+}
