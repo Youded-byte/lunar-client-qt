@@ -17,7 +17,7 @@ UpdateChecker::UpdateChecker() {
 }
 
 void UpdateChecker::checkForUpdates(bool emitIfUnavailable) {
-    QNetworkRequest request(QUrl("https://api.github.com/repos/Nilsen84/lunar-client-qt/releases"));
+    QNetworkRequest request(QUrl("https://api.github.com/repos/Youded-byte/lunar-client-qt/releases/"));
     request.setAttribute(QNetworkRequest::User, emitIfUnavailable);
 
     networkManager.get(request);

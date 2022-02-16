@@ -45,6 +45,10 @@
 *.dll
 *.dylib
 
+# Visual Studio 2015/2017 cache/options directory
+.vs/
+CmakeSettings.json
+
 # Qt-es
 object_script.*.Release
 object_script.*.Debug
