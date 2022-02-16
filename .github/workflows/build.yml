@@ -20,6 +20,8 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
+      with:
+        fetch-depth: 0
       
     - name: Install Qt & MinGW
       uses: jurplel/install-qt-action@v2.14.0
@@ -29,19 +31,29 @@ jobs:
         target: 'desktop'
         arch: 'win64_mingw81'
         tools: 'tools_mingw,8.1.0-1-202004170606,qt.tools.win64_mingw810'
-      
+
+    - name: Install OpenSSL
+      shell: powershell
+      run: |
+        Add-Content -Path "$env:VCPKG_INSTALLATION_ROOT\triplets\**\*" -Filter *.cmake -Value "`nset(VCPKG_BUILD_TYPE release)"
+        vcpkg install openssl:x64-mingw-dynamic
+
     - name: Configure CMake
       run: cmake . -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}} -G "MinGW Makefiles"
 
     - name: Build
       run: cmake --build . --config ${{env.BUILD_TYPE}}
       
-    - name: Package Dependencies
+    - name: Package Qt
       shell: bash
       run: |
         mkdir Lunar\ Client\ Qt
         mv -t Lunar\ Client\ Qt/ lunar-client-qt.exe libs/ agents/
         PATH="$IQTA_TOOLS/mingw810_64/bin":$PATH windeployqt Lunar\ Client\ Qt/ --compiler-runtime --no-angle --no-opengl-sw --no-virtualkeyboard --no-webkit2 --no-system-d3d-compiler --no-translations --no-quick-import
+
+    - name: Package OpenSSL
+      shell: powershell
+      run: Get-ChildItem -Path "$env:VCPKG_INSTALLATION_ROOT\packages\openssl_x64-mingw-dynamic\bin\*" -Include *.dll | Copy-Item -Destination "Lunar Client Qt"
 
     - name: Compress
       shell: powershell
@@ -58,6 +70,8 @@ jobs:
     
     steps:
       - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
       
       - name: Install Qt
         uses: jurplel/install-qt-action@v2.14.0
@@ -95,6 +109,8 @@ jobs:
     
     steps: 
       - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
       
       - name: Install Packages
         run: |
@@ -124,15 +140,10 @@ jobs:
 
     runs-on: ubuntu-latest
     steps:
-    - name: Checkout
-      uses: actions/checkout@v2
-
     - name: Download Builds
-      if: startsWith(github.ref, 'refs/tags/v')
       uses: actions/download-artifact@v2.1.0
 
     - name: Create Release
-      if: startsWith(github.ref, 'refs/tags/v')
       uses: softprops/action-gh-release@v0.1.14
       with:
         draft: true
