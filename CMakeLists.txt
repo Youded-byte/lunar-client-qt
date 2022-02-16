@@ -27,20 +27,19 @@ set(QT_VER Qt6)
 endif()
 
 # ---------------------------- Get current version and tag --------------------------------
-
 set(LCQT_VERSION Unknown)
 set(LCQT_VERSION_TAG Unknown)
 
 find_package(Git)
 if(Git_FOUND)
     execute_process(
-            COMMAND ${GIT_EXECUTABLE} describe --match "v[0-9]*"
+            COMMAND ${GIT_EXECUTABLE} describe --tag
             OUTPUT_VARIABLE tag
             WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
     )
 
-    if(tag MATCHES "^v([0-9]+)\\.([0-9]+)\\.([0-9]+)")
-        set(LCQT_VERSION ${CMAKE_MATCH_1}.${CMAKE_MATCH_2}.${CMAKE_MATCH_3})
+    if(tag MATCHES "^v([0-9]+)\\.([0-9]+)\\.([0-9]+)\\.([0-9]+)")
+        set(LCQT_VERSION ${CMAKE_MATCH_1}.${CMAKE_MATCH_2}.${CMAKE_MATCH_3}.${CMAKE_MATCH_4})
         set(LCQT_VERSION_TAG v${LCQT_VERSION})
     else()
         message(WARNING "Couldn't find latest version tag, disabling update checker.")
