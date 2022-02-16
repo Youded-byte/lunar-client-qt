@@ -8,6 +8,7 @@
 #include <QString>
 
 namespace Utils {
+    bool getAgentExists(const QString &name);
     QString getLibsDirectory();
     QString getAgentsDirectory();
 
