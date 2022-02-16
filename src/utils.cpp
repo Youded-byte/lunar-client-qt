@@ -8,7 +8,7 @@
 #include <QFile> 
 #include <QApplication>
 
-bool getAgentExists(const QString &name){
+bool Utils::getAgentExists(const QString &name){
     if (QFile::exists(getAgentsDirectory() + QDir::separator() + name))
         return true;
     else
