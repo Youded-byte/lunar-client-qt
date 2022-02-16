@@ -5,7 +5,15 @@
 #include "utils.h"
 
 #include <QDir>
+#include <QFile> 
 #include <QApplication>
+
+bool getAgentExists(const QString &name){
+    if (QFile::exists(getAgentsDirectory() + QDir::separator() + name))
+        return true;
+    else
+        return false;
+}
 
 QString Utils::getLibsDirectory() {
     return QDir::cleanPath(QApplication::applicationDirPath() + QDir::separator() + "libs");
@@ -16,9 +24,15 @@ QString Utils::getAgentsDirectory() {
 }
 
 QString Utils::getAgentFlags(const QString &name) {
-    return QStringLiteral("-javaagent:") + getAgentsDirectory() + QDir::separator() + name;
+    if (getAgentExists(name))
+        return QStringLiteral("-javaagent:") + getAgentsDirectory() + QDir::separator() + name;
+    else
+        return QStringLiteral("");
 }
 
 QString Utils::getAgentFlags(const QString &name, const QString &option) {
-    return getAgentFlags(name) + "=" + option;
+    if (getAgentExists(name))
+        return getAgentFlags(name) + "=" + option;
+    else
+        return QStringLiteral("");
 }
