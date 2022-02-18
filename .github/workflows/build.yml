@@ -29,7 +29,7 @@ jobs:
         version: '6.2.3'
         host: 'windows'
         target: 'desktop'
-        arch: 'win64_mingw81'
+        arch: 'win64_mingw'
         tools: 'tools_mingw,8.1.0-1-202004170606,qt.tools.win64_mingw810'
 
     - name: Install OpenSSL
