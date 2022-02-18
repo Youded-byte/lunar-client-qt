@@ -9,7 +9,7 @@ Launcher::Launcher(const Config& config, QObject *parent) : config(config), QObj
 
 QString Launcher::getLevelHeadOptions(const bool& uselevelheadprefix, const QString& levelheadprefix, const bool& uselevelheadnicklevel, const QString& levelheadnicklevel) {
     if (!uselevelheadprefix && uselevelheadnicklevel)
-        return QStringLiteral("@") + levelheadnicklevel;
+        return QStringLiteral("Level: @") + levelheadnicklevel;
     else if (!uselevelheadnicklevel && uselevelheadprefix)
         return levelheadprefix;
     else return levelheadprefix + "@" + levelheadnicklevel;
