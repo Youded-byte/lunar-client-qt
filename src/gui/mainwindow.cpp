@@ -24,7 +24,7 @@
 #include "widgets/widgetutils.h"
 
 MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), config(Config::load()), offlineLauncher(config){
-    setWindowTitle(QStringLiteral("Lunar Client Qt v") + VERSION);
+    setWindowTitle(QStringLiteral("Lunar Client Qt v") + BuildConfig::VERSION);
     static QString icon = QStringLiteral("icon.ico");
     if (QFile::exists(icon))
         setWindowIcon(QIcon(icon));
@@ -51,9 +51,6 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), config(Config::lo
     QWidget* centralWidget = new QWidget();
 
     QGridLayout* mainLayout = new QGridLayout();
-MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), config(Config::load()), offlineLauncher(config) {
-    setWindowTitle(QStringLiteral("Lunar Client Qt - Version: ") + BuildConfig::VERSION);
-    QGridLayout *mainLayout = new QGridLayout();
 
     pageList = new QListWidget();
     pageStack = new QStackedWidget();
