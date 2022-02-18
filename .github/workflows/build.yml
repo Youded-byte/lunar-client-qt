@@ -24,9 +24,9 @@ jobs:
         fetch-depth: 0
       
     - name: Install Qt & MinGW
-      uses: jurplel/install-qt-action@v2.14.0
+      uses: jurplel/install-qt-action@v2
       with:
-        version: '5.15.2'
+        version: '6.2.3'
         host: 'windows'
         target: 'desktop'
         arch: 'win64_mingw81'
