@@ -49,7 +49,7 @@ jobs:
       run: |
         mkdir Lunar\ Client\ Qt
         mv -t Lunar\ Client\ Qt/ lunar-client-qt.exe libs/ agents/
-        PATH="$IQTA_TOOLS/mingw810_64/bin":$PATH windeployqt Lunar\ Client\ Qt/ --compiler-runtime --no-angle --no-opengl-sw --no-virtualkeyboard --no-webkit2 --no-system-d3d-compiler --no-translations --no-quick-import
+        PATH="$IQTA_TOOLS/mingw810_64/bin":$PATH windeployqt Lunar\ Client\ Qt/ --compiler-runtime -no-opengl-sw --no-virtualkeyboard --no-system-d3d-compiler --no-translations --no-quick-import
 
     - name: Package OpenSSL
       shell: powershell
