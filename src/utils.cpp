@@ -15,12 +15,14 @@ bool Utils::getAgentExists(const QString &name){
         return false;
 }
 
+#include "buildconfig.h"
+
 QString Utils::getLibsDirectory() {
-    return QDir::cleanPath(QApplication::applicationDirPath() + QDir::separator() + "libs");
+    return QDir::cleanPath(QApplication::applicationDirPath() + QDir::separator() + BuildConfig::LIBS_DIR);
 }
 
 QString Utils::getAgentsDirectory() {
-    return QDir::cleanPath(QApplication::applicationDirPath() + QDir::separator() + "agents");
+    return QDir::cleanPath(QApplication::applicationDirPath() + QDir::separator() + BuildConfig::AGENTS_DIR);
 }
 
 QString Utils::getAgentFlags(const QString &name) {

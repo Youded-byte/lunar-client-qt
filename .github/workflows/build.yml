@@ -35,7 +35,7 @@ jobs:
     - name: Install OpenSSL
       shell: powershell
       run: |
-        Add-Content -Path "$env:VCPKG_INSTALLATION_ROOT\triplets\**\*" -Filter *.cmake -Value "`nset(VCPKG_BUILD_TYPE release)"
+        Get-ChildItem "$env:VCPKG_INSTALLATION_ROOT\triplets\" -Recurse -Include *.cmake | Add-Content -Value "`nset(VCPKG_BUILD_TYPE release)"
         vcpkg install openssl:x64-mingw-dynamic
 
     - name: Configure CMake
@@ -43,13 +43,17 @@ jobs:
 
     - name: Build
       run: cmake --build . --config ${{env.BUILD_TYPE}}
-      
+
+    - name: Move built files to new directory
+      shell: powershell
+      run: |
+        mkdir 'Lunar Client Qt'
+        mv -Path @('lunar-client-qt.exe';jq -r '.agentsDestDir,.libsDestDir' config.json) -Destination 'Lunar Client Qt'
+
     - name: Package Qt
       shell: bash
       run: |
-        mkdir Lunar\ Client\ Qt
-        mv -t Lunar\ Client\ Qt/ lunar-client-qt.exe libs/ agents/
-        PATH="$IQTA_TOOLS/mingw810_64/bin":$PATH windeployqt Lunar\ Client\ Qt/ --compiler-runtime -no-opengl-sw --no-virtualkeyboard --no-system-d3d-compiler --no-translations --no-quick-import
+        PATH="$IQTA_TOOLS/mingw810_64/bin":$PATH windeployqt Lunar\ Client\ Qt/ --compiler-runtime --no-angle --no-opengl-sw --no-virtualkeyboard --no-webkit2 --no-system-d3d-compiler --no-translations --no-quick-import
 
     - name: Package OpenSSL
       shell: powershell
@@ -114,7 +118,7 @@ jobs:
       
       - name: Install Packages
         run: |
-          pacman -Syu --noconfirm qt6-base qt6-svg cmake base-devel
+          pacman -Syu --noconfirm --needed qt5-base qt5-svg cmake base-devel git jq
           
       - name: Configure CMake
         run: cmake . -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}}
@@ -125,7 +129,7 @@ jobs:
       - name: Compress
         run: |
           mkdir Lunar\ Client\ Qt
-          mv -t Lunar\ Client\ Qt/ lunar-client-qt libs/ agents/
+          jq '.agentsDestDir,.libsDestDir' config.json | xargs mv -t Lunar\ Client\ Qt/ lunar-client-qt
           tar czvf linux.tar.gz Lunar\ Client\ Qt/
 
       - uses: actions/upload-artifact@v2

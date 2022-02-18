@@ -20,7 +20,7 @@
 #include "pages/generalpage.h"
 #include "pages/minecraftpage.h"
 #include "launch/launcher.h"
-#include "version.h"
+#include "buildconfig.h"
 #include "widgets/widgetutils.h"
 
 MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), config(Config::load()), offlineLauncher(config){
@@ -51,6 +51,9 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), config(Config::lo
     QWidget* centralWidget = new QWidget();
 
     QGridLayout* mainLayout = new QGridLayout();
+MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), config(Config::load()), offlineLauncher(config) {
+    setWindowTitle(QStringLiteral("Lunar Client Qt - Version: ") + BuildConfig::VERSION);
+    QGridLayout *mainLayout = new QGridLayout();
 
     pageList = new QListWidget();
     pageStack = new QStackedWidget();
