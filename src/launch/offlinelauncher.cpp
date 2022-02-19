@@ -69,16 +69,16 @@ void OfflineLauncher::launch() {
 
 
     if(config.useLevelHeadPrefix || config.useLevelHeadNick)
-        args << Utils::getAgentFlags("LevelHeadImproved.incljar", getLevelHeadOptions(config.useLevelHeadPrefix, config.levelHeadPrefix, config.useLevelHeadNick, QString::number(config.levelHeadNickLevel)));
+        args << Utils::getAgentFlags("LevelHeadImproved", getLevelHeadOptions(config.useLevelHeadPrefix, config.levelHeadPrefix, config.useLevelHeadNick, QString::number(config.levelHeadNickLevel)));
 
     if(config.useAutoggMessage)
-        args << Utils::getAgentFlags("CustomAutoGG.incljar", config.autoggMessage);
+        args << Utils::getAgentFlags("CustomAutoGG", config.autoggMessage);
 
     if (config.useBetterHurtCam)
-        args << Utils::getAgentFlags("LunarBetterHurtCam.incljar", QString::number(config.betterHurtCamValue));
+        args << Utils::getAgentFlags("LunarBetterHurtCam", QString::number(config.betterHurtCamValue));
 
     if(config.useCosmetics && config.unlockCosmetics)
-        args << Utils::getAgentFlags("UnlockCosmetics.incljar");
+        args << Utils::getAgentFlags("UnlockCosmetics");
 
     args << QProcess::splitCommand(config.jvmArgs);
 
