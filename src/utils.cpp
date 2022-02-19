@@ -29,12 +29,12 @@ QString Utils::getAgentFlags(const QString &name) {
     if (getAgentExists(name))
         return QStringLiteral("-javaagent:") + getAgentsDirectory() + QDir::separator() + name;
     else
-        return QStringLiteral("");
+        return null;
 }
 
 QString Utils::getAgentFlags(const QString &name, const QString &option) {
     if (getAgentExists(name))
         return getAgentFlags(name) + "=" + option;
     else
-        return QStringLiteral("");
+        return null;
 }
