@@ -20,9 +20,8 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
-
-    - name: Fetch tags
-      run : git fetch --prune --unshallow --tags
+      with:
+        fetch-depth: 0
       
     - name: Install Qt & MinGW
       uses: jurplel/install-qt-action@v2
@@ -75,9 +74,8 @@ jobs:
     
     steps:
       - uses: actions/checkout@v2
-
-      - name: Fetch tags
-        run: git fetch --prune --unshallow --tags -f
+        with:
+          fetch-depth: 0
       
       - name: Install Qt
         uses: jurplel/install-qt-action@v2.14.0
@@ -120,9 +118,8 @@ jobs:
           pacman -Syu --noconfirm --needed qt5-base qt5-svg cmake base-devel git jq
 
       - uses: actions/checkout@v2
-
-      - name: Fetch tags
-        run: git fetch --prune --unshallow --tags -f
+        with:
+          fetch-depth: 0
 
       - name: Configure CMake
         run: cmake . -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}}
