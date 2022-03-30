@@ -38,8 +38,6 @@ QString Utils::getAgentFlags(const QString &name, const QString &option) {
     else
         return QString();
 }
-    return getAgentFlags(name) + "=" + option;
-}
 
 QString Utils::getAssetsIndex(const QString &version) {
     if(version == "1.7")
