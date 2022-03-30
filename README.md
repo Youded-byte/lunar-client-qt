@@ -10,8 +10,6 @@ Add me on Discord (nils#5281) if you have any questions or thoughts about the pr
 One of the primary features of this launcher is the ability to easily attach Java premain agents to your game, 
 this allows you to modify the game on launch, which lets you write modifications that won't break when Lunar Client recieves an update. 
   
-Here's a repository containing some useful Java agents that you might want to use: https://github.com/Nilsen84/lunar-client-agents  
-  
 Here are repositories containing some useful java agents that you might want to use: https://github.com/Nilsen84/lunar-client-agents 
 and https://github.com/Youded-byte/youded-lunar-client-agents.
 If you're familiar with java bytecode feel free to write your own!
@@ -30,9 +28,9 @@ This launcher is able to launch lunar client very quickly. The option to disable
 a custom JRE and JVM arguments opens up more possibilities for performance improvements. You can refer to [this](https://github.com/Youded-byte/Java-Optimisations-MC/blob/main/README.md) for advice.
 
 ## Build instructions
-Make sure you have Qt6 or Qt5 and CMake 3.16+ installed. 
+Make sure you have Qt6 or Qt5 and CMake 3.16+ installed.
 ```
-git clone https://github.com/Nilsen84/lunar-client-qt.git
+git clone https://github.com/Youded-byte/lunar-client-qt.git
 cd lunar-client-qt
 mkdir build && cd build
 cmake ..
@@ -40,6 +38,6 @@ make
 ```
 
 **NOTE**  
-If you're on MacOS, you wanna start off by installing Qt using [Brew](https://brew.sh/): ```brew install qt@5```  
-You also want to replace the `cmake ..` command with `cmake -DCMAKE_PREFIX_PATH=/usr/local/opt/qt5/ ..`  
+If you're on MacOS, you wanna start off by installing Qt using [Brew](https://brew.sh/): ```brew install qt@6```  
+You also want to replace the `cmake ..` command with `cmake -DCMAKE_PREFIX_PATH=/usr/local/opt/qt6/ ..`  
 Besides that, follow the same instructions above.
