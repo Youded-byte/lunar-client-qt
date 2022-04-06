@@ -28,7 +28,7 @@ This launcher is able to launch lunar client very quickly. The option to disable
 a custom JRE and JVM arguments opens up more possibilities for performance improvements. You can refer to [this](https://github.com/Youded-byte/Java-Optimisations-MC/blob/main/README.md) for advice.
 
 ## Build instructions
-Make sure you have Qt6 or Qt5 and CMake 3.16+ installed.
+Make sure you have Qt6 or Qt5 and CMake 3.21+ installed.
 ```
 git clone https://github.com/Youded-byte/lunar-client-qt.git
 cd lunar-client-qt
