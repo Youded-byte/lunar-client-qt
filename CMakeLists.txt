@@ -33,10 +33,11 @@ set(LCQT_VERSION_TAG Unknown)
 find_package(Git)
 if(Git_FOUND)
     execute_process(
-            COMMAND ${GIT_EXECUTABLE} describe
+            COMMAND ${GIT_EXECUTABLE} describe --tags --match "v[0-9]*"
             OUTPUT_VARIABLE tag
             WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
     )
+            message(STATUS "Tag: ${tag}")
 
     if(tag MATCHES "^v([0-9]+)\\.([0-9]+)\\.([0-9]+)")
             set(LCQT_VERSION ${CMAKE_MATCH_1}.${CMAKE_MATCH_2}.${CMAKE_MATCH_3})
