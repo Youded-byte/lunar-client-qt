@@ -108,7 +108,6 @@ void OfflineLauncher::launch() {
     env.remove("_JAVA_OPTIONS");
 
     process.setProcessEnvironment(env);
-    process.setWorkingDirectory(lunarDir + "/offline/" + config.gameVersion);
     process.setStandardOutputFile("latest.log", QIODevice::Truncate);
     process.setStandardErrorFile("error.log", QIODevice::Truncate);
 
