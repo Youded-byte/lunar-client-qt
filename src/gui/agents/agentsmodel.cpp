@@ -2,9 +2,10 @@
 // Created by nils on 2/6/22.
 //
 
-#include <QFileInfo>
-
 #include "agentsmodel.h"
+
+#include <QFileInfo>
+#include <QMimeData>
 
 AgentsModel::AgentsModel(QList<Agent> &agents, QObject *parent) : agents(agents), QAbstractTableModel(parent) {
 
@@ -33,15 +34,24 @@ QVariant AgentsModel::data(const QModelIndex &index, int role) const {
                 return agent.name;
             case Qt::ToolTipRole:
                 return agent.path;
+            case Qt::CheckStateRole:
+                return agent.enabled ? Qt::Checked : Qt::Unchecked;
         }
     }
     return {};
 }
 
 bool AgentsModel::setData(const QModelIndex &index, const QVariant &value, int role) {
+    Agent& agent = agents[index.row()];
+
     if (index.column() == Column::OPTION) {
         if (role == Qt::EditRole) {
-            agents[index.row()].option = value.toString();
+            agent.option = value.toString();
+            return true;
+        }
+    }else if(index.column() == Column::NAME){
+        if(role == Qt::CheckStateRole){
+            agent.enabled = !agent.enabled;
             return true;
         }
     }
@@ -62,9 +72,15 @@ QVariant AgentsModel::headerData(int section, Qt::Orientation orientation, int r
 
 Qt::ItemFlags AgentsModel::flags(const QModelIndex &index) const {
     auto flags = QAbstractTableModel::flags(index);
-    if (index.column() == Column::OPTION) {
-        flags ^= Qt::ItemIsEditable;
+
+    if(index.column() == Column::OPTION){
+        flags |= Qt::ItemIsEditable;
+    }else if(index.column() == Column::NAME){
+        flags |= Qt::ItemIsUserCheckable;
     }
+
+    flags |= Qt::ItemIsDropEnabled;
+
     return flags;
 }
 
@@ -79,19 +95,11 @@ bool AgentsModel::removeRows(int row, int count, const QModelIndex &parent) {
     return true;
 }
 
-bool
-AgentsModel::moveRows(const QModelIndex &sourceParent, int sourceRow, int count, const QModelIndex &destinationParent,
-                      int destinationChild) {
-    if (sourceRow < 0
-        || sourceRow + count - 1 >= rowCount(sourceParent)
-        || destinationChild <= 0
-        || destinationChild > rowCount(destinationParent)
-        || sourceRow == destinationChild - 1
-        || count <= 0)
-        return false;
 
-    if (!beginMoveRows(QModelIndex(), sourceRow, sourceRow + count - 1, QModelIndex(), destinationChild))
-        return false;
+// Stole this from QStringListModel
+bool AgentsModel::moveRows(const QModelIndex &sourceParent, int sourceRow, int count, const QModelIndex &destinationParent,
+                      int destinationChild) {
+    beginMoveRows(QModelIndex(), sourceRow, sourceRow + count - 1, QModelIndex(), destinationChild);
 
     /*
     QList::move assumes that the second argument is the index where the item will end up to
@@ -111,7 +119,45 @@ AgentsModel::moveRows(const QModelIndex &sourceParent, int sourceRow, int count,
 }
 
 void AgentsModel::addAgent(const QString &path, const QString &option) {
+    if(containsPath(path)) return;
+
     beginInsertRows(QModelIndex(), agents.size(), agents.size());
     agents.append({path, option});
     endInsertRows();
+}
+
+Qt::DropActions AgentsModel::supportedDropActions() const {
+    return Qt::CopyAction;
+}
+
+bool AgentsModel::canDropMimeData(const QMimeData *data, Qt::DropAction action, int row, int column,
+                                  const QModelIndex &parent) const {
+    return data->hasUrls();
+}
+
+bool AgentsModel::dropMimeData(const QMimeData *data, Qt::DropAction action, int row, int column,
+                               const QModelIndex &parent) {
+    foreach(const QUrl& url, data->urls()){
+        if(!url.isLocalFile()){
+            continue;
+        }
+
+        QString file = url.toLocalFile();
+
+        if(file.endsWith(".jar")){
+            addAgent(url.toLocalFile(), {});
+        }
+    }
+
+    return true;
+}
+
+bool AgentsModel::containsPath(const QString &path) const {
+    foreach(const Agent& agent, agents){
+        if(agent.path == path){
+            return true;
+        }
+    }
+
+    return false;
 }

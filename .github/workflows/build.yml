@@ -19,10 +19,10 @@ jobs:
     runs-on: windows-2022
 
     steps:
-    - uses: actions/checkout@v2
-    
-    - name: Fetch tags
-      run : git fetch --prune --unshallow --tags -f
+    - uses: actions/checkout@v3
+
+    - name: Fetch Tags
+      run: git fetch --prune --tags -f
       
     - name: Install Qt & MinGW
       uses: jurplel/install-qt-action@v2
@@ -54,7 +54,7 @@ jobs:
     - name: Package Qt
       shell: bash
       run: |
-        PATH="$IQTA_TOOLS/mingw810_64/bin":$PATH windeployqt Lunar\ Client\ Qt/ --compiler-runtime --no-opengl-sw --no-virtualkeyboard --no-system-d3d-compiler --no-translations --no-quick-import
+        PATH="$IQTA_TOOLS/mingw810_64/bin":$PATH windeployqt Lunar\ Client\ Qt/ --compiler-runtime --no-angle --no-opengl-sw --no-virtualkeyboard --no-webkit2 --no-system-d3d-compiler --no-translations --no-quick-import
 
     - name: Package OpenSSL
       shell: powershell
@@ -74,10 +74,10 @@ jobs:
     runs-on: macos-10.15
     
     steps:
-      - uses: actions/checkout@v2
-    
-      - name: Fetch tags
-        run : git fetch --prune --unshallow --tags -f
+      - uses: actions/checkout@v3
+
+      - name: Fetch Tags
+        run: git fetch --prune --tags -f
       
       - name: Install Qt
         uses: jurplel/install-qt-action@v2.14.0
@@ -119,10 +119,13 @@ jobs:
         run: |
           pacman -Syu --noconfirm --needed qt5-base qt5-svg cmake base-devel git jq
 
-      - uses: actions/checkout@v2
-    
-      - name: Fetch tags
-        run : git fetch --prune --unshallow --tags -f
+      - uses: actions/checkout@v3
+
+      - name: Mark Repository as Safe
+        run: git config --global safe.directory "$GITHUB_WORKSPACE"
+
+      - name: Fetch Tags
+        run: git fetch --prune --tags -f
 
       - name: Configure CMake
         run: cmake . -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}}
@@ -144,16 +147,23 @@ jobs:
   create_release:
     name: "Create Release"
     needs: [build_windows, build_mac, build_arch]
-    if: startsWith(github.ref, 'refs/tags/v')
+    if: startsWith(github.ref, 'refs/tags/')
 
     runs-on: ubuntu-latest
+
     steps:
     - name: Download Builds
-      uses: actions/download-artifact@v2.1.0
+      uses: actions/download-artifact@v3
+
+    - name: Variables
+      id: variables
+      run: |
+        echo "::set-output name=version::${GITHUB_REF_NAME#v}"
 
     - name: Create Release
       uses: softprops/action-gh-release@v0.1.14
       with:
+        name: ${{ steps.variables.outputs.version }}
         draft: true
         fail_on_unmatched_files: true
         files: |

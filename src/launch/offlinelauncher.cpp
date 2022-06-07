@@ -61,7 +61,8 @@ void OfflineLauncher::launch() {
     };
 
     foreach(const Agent& agent, config.agents)
-        args << "-javaagent:" + agent.path + '=' + agent.option;
+        if(agent.enabled)
+            args << "-javaagent:" + agent.path + '=' + agent.option;
 
 
     if(config.useLevelHeadPrefix || config.useLevelHeadNick)
