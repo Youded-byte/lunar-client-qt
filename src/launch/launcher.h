@@ -14,7 +14,7 @@ public:
 
     Launcher(const Config& config, QObject* parent);
 
-    virtual void launch() = 0;
+    virtual bool launch() = 0;
 
     static QString getLevelHeadOptions(const bool& uselevelheadprefix, const QString& levelheadprefix, const bool& uselevelheadnicklevel, const QString& levelheadnicklevel);
 protected:

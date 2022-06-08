@@ -19,7 +19,12 @@ OfflineLauncher::OfflineLauncher(const Config& config, QObject *parent) : Launch
 }
 
 
-void OfflineLauncher::launch() {
+bool OfflineLauncher::launch() {
+    if (config.gameVersion.isEmpty()) {
+        emit error("No version selected!\nDo you have lunar installed?");
+        return false;
+    }
+
     QProcess process;
     process.setProgram(config.useCustomJre ? config.customJrePath : findJavaExecutable(config.gameVersion));
 
@@ -81,13 +86,13 @@ void OfflineLauncher::launch() {
             "--assetIndex", Utils::getAssetsIndex(config.gameVersion),
             "--userProperties", "{}",
             "--gameDir", config.useCustomMinecraftDir ? config.customMinecraftDir : FS::getMinecraftDirectory(),
-            "--launcherVersion", "2.10.0",
+            "--launcherVersion", "2.10.1",
             "--width", QString::number(config.windowWidth),
             "--height", QString::number(config.windowHeight)
     };
 
     if(config.useCosmetics)
-        args << "--texturesDir" << lunarDir + "/textures";
+        args << "--texturesDir" << FS::combinePaths(FS::getLunarDirectory(), "textures");
 
     if(config.joinServerOnLaunch)
         args << "--server" << config.serverIp;
@@ -109,6 +114,7 @@ void OfflineLauncher::launch() {
 
     if(!process.startDetached()){
         emit error("Failed to start process: " + process.errorString());
+        return false;
     }
 
     if (!config.helpers.isEmpty())
@@ -116,7 +122,6 @@ void OfflineLauncher::launch() {
         foreach(const QString & path, config.helpers)
             HelperLaunch(path);
     }
-}
 
     return true;
 }
