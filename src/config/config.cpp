@@ -56,7 +56,7 @@ void Config::save() {
     saveObj["windowHeight"] = windowHeight;
 
     QJsonArray arr;
-    foreach(const Agent& agent, agents){
+    for(const Agent& agent : agents){
         QJsonObject agentObj;
         agentObj["path"] = agent.path;
         agentObj["option"] = agent.option;
@@ -83,7 +83,7 @@ Config Config::load() {
 
     QList<Agent> agents;
 
-    foreach(const QJsonValue& val, arr){
+    for(auto val : arr){
         if(val.isObject()){
             QJsonObject obj = val.toObject();
 

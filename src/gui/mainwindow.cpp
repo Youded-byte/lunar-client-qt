@@ -22,6 +22,7 @@
 #include "launch/launcher.h"
 #include "buildconfig.h"
 #include "widgets/widgetutils.h"
+#include "util/utils.h"
 
 MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), config(Config::load()), offlineLauncher(config){
     setWindowTitle(QStringLiteral("Lunar Client Qt v") + BuildConfig::VERSION);
@@ -66,7 +67,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), config(Config::lo
         new HelpersPage(config)
     };
 
-    foreach(ConfigurationPage* page, pages){
+    for(ConfigurationPage* page : pages){
         new QListWidgetItem(page->icon(), page->title(), pageList);
         pageStack->addWidget(page);
     }
@@ -81,7 +82,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), config(Config::lo
     pageList->setFont(font);
 
     versionSelect = new QComboBox();
-    versionSelect->addItems({"1.7", "1.8", "1.12", "1.16", "1.17", "1.18.1", "1.18.2"});
+    versionSelect->addItems(Utils::getOrderedAvailableVersions());
 
     launchButton = new QPushButton();
     launchButton->setMinimumHeight(80);
@@ -168,16 +169,16 @@ void MainWindow::closeEvent(QCloseEvent *event) {
 }
 
 void MainWindow::apply() {
-            foreach(ConfigurationPage *page, pages) {
-            page->apply();
-        }
+    for(ConfigurationPage *page : pages) {
+        page->apply();
+    }
     config.gameVersion = versionSelect->currentText();
 }
 
 void MainWindow::load() {
-            foreach(ConfigurationPage *page, pages) {
-            page->load();
-        }
+    for(ConfigurationPage* page : pages){
+        page->load();
+    }
     versionSelect->setCurrentText(config.gameVersion);
 }
 

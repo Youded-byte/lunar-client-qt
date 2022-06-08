@@ -12,7 +12,7 @@ class Launcher : public QObject {
 Q_OBJECT
 public:
 
-    explicit Launcher(const Config& config, QObject* parent);
+    Launcher(const Config& config, QObject* parent);
 
     virtual void launch() = 0;
 

@@ -12,17 +12,8 @@
 #include <QElapsedTimer>
 #include <QIODevice>
 
-#include "utils.h"
-
-const QString OfflineLauncher::lunarDir = QDir::homePath() + "/.lunarclient";
-const QString OfflineLauncher::minecraftDir =
-#ifdef Q_OS_WIN
-        QStandardPaths::writableLocation(QStandardPaths::AppDataLocation) + "/.minecraft";
-#elif defined(Q_OS_DARWIN)
-        QStandardPaths::writableLocation(QStandardPaths::AppDataLocation) + "/minecraft";
-#else
-        QDir::homePath() + "/.minecraft";
-#endif
+#include "util/fs.h"
+#include "util/utils.h"
 
 OfflineLauncher::OfflineLauncher(const Config& config, QObject *parent) : Launcher(config, parent) {
 }
@@ -36,15 +27,19 @@ void OfflineLauncher::launch() {
     process.setStandardOutputFile(QProcess::nullDevice());
     process.setStandardErrorFile(QProcess::nullDevice());
 
-    QString workingDir = lunarDir + "/offline/" + config.gameVersion;
+    QString workingDir = FS::combinePaths(
+        FS::getLunarDirectory(),
+        "offline",
+        config.gameVersion
+    );
 
     process.setWorkingDirectory(workingDir);
 
     QStringList classPath = QDir(workingDir).entryList(QDir::Files, QDir::Time);
 
-    QFileInfoList libsList = QDir(Utils::getLibsDirectory()).entryInfoList(QDir::Files);
+    QFileInfoList libsList = QDir(FS::getLibsDirectory()).entryInfoList(QDir::Files);
 
-    foreach(const QFileInfo& info, libsList) {
+    for(const QFileInfo& info : libsList) {
         classPath << info.absoluteFilePath();
     }
 
@@ -60,7 +55,7 @@ void OfflineLauncher::launch() {
          "-cp", classPath.join(QDir::listSeparator())
     };
 
-    foreach(const Agent& agent, config.agents)
+    for(const Agent& agent : config.agents)
         if(agent.enabled)
             args << "-javaagent:" + agent.path + '=' + agent.option;
 
@@ -85,8 +80,8 @@ void OfflineLauncher::launch() {
             "--accessToken", "0",
             "--assetIndex", Utils::getAssetsIndex(config.gameVersion),
             "--userProperties", "{}",
-            "--gameDir", config.useCustomMinecraftDir ? config.customMinecraftDir : minecraftDir,
-            "--launcherVersion", "2.10.1",
+            "--gameDir", config.useCustomMinecraftDir ? config.customMinecraftDir : FS::getMinecraftDirectory(),
+            "--launcherVersion", "2.10.0",
             "--width", QString::number(config.windowWidth),
             "--height", QString::number(config.windowHeight)
     };
@@ -123,31 +118,25 @@ void OfflineLauncher::launch() {
     }
 }
 
+    return true;
+}
+
 QString OfflineLauncher::findJavaExecutable(const QString& version) {
-    QDirIterator versionSpecificIt(lunarDir+"/jre/"+version, QDir::Dirs | QDir::NoDotAndDotDot);
+    QString jreDir = FS::combinePaths(FS::getLunarDirectory(), "jre");
 
-    while(versionSpecificIt.hasNext()){
-        QString potentialExecutable = versionSpecificIt.next() +
+    QDirIterator jreIt(FS::combinePaths(jreDir, version), QDir::Dirs | QDir::NoDotAndDotDot);
+
+    while(jreIt.hasNext()){
+        QString potentialExecutable = FS::combinePaths(
+                jreIt.next(),
+                "bin",
 #ifdef Q_OS_WIN
-        "/bin/java.exe";
+                "javaw.exe"
 #else
-        "/bin/java";
+                "java"
 #endif
 
-        if(QFileInfo(potentialExecutable).isExecutable())
-            return potentialExecutable;
-    }
-
-
-    QDirIterator generalIt(lunarDir+"/jre", QDir::Dirs | QDir::NoDotAndDotDot);
-
-    while(generalIt.hasNext()){
-        QString potentialExecutable = generalIt.next() +
-#ifdef Q_OS_WIN
-        "/bin/java.exe";
-        #else
-        "/bin/java";
-#endif
+        );
 
         if(QFileInfo(potentialExecutable).isExecutable())
             return potentialExecutable;
