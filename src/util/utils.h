@@ -16,6 +16,12 @@ namespace Utils {
     QString getAgentFlags(const QString& name);
     QString getAgentFlags(const QString& name, const QString& option);
     QString getAssetsIndex(const QString& version);
+    QString getGameVersion(const QString& version);
+    QString getVersionFile(const QString& version);
+
+    QStringList getClassPath(const QStringList& files, const QString& version);
+    QStringList getExternalFiles(const QStringList& files, const QString& version);
+    bool isFabricVersion(const QString& version);
 
     QStringList getOrderedAvailableVersions();
 };

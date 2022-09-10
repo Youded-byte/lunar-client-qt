@@ -19,7 +19,7 @@ public:
 signals:
     void error(const QString& message);
 private:
-    static QString findJavaExecutable(const QString& version);
+    static QString findJavaExecutable();
     static void HelperLaunch(const QString& helper);
 };
 
