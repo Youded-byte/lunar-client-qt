@@ -25,7 +25,7 @@ jobs:
       run: git fetch --prune --tags -f
       
     - name: Install Qt & MinGW
-      uses: jurplel/install-qt-action@v2
+      uses: jurplel/install-qt-action@v3
       with:
         version: '6.2.1'
         host: 'windows'
@@ -80,7 +80,7 @@ jobs:
         run: git fetch --prune --tags -f
       
       - name: Install Qt
-        uses: jurplel/install-qt-action@v2.14.0
+        uses: jurplel/install-qt-action@v3
         with:
           version: '6.2.2'
           host: 'mac'
