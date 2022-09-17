@@ -19,6 +19,7 @@ void Config::save() {
     QJsonObject saveObj;
 
     saveObj["version"] = gameVersion;
+    saveObj["modLoader"] = modLoader;
 
     saveObj["keepMemorySame"] = keepMemorySame;
     saveObj["initialMemory"] = initialMemory;
@@ -115,6 +116,7 @@ Config Config::load() {
 
     return {
         jsonObj["version"].toString("1.8"),
+        jsonObj["modLoader"].toString("Optifine"),
         jsonObj["keepMemorySame"].toBool(true),
         jsonObj["initialMemory"].toInt(3072),
         jsonObj["maxMemory"].toInt(3072),

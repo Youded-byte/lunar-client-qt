@@ -47,10 +47,8 @@ QString Utils::getVersionFile(const QString& version) {
 }
 
 
-QStringList Utils::getClassPath(const QStringList& files, const QString& version) {
+QStringList Utils::getClassPath(const QStringList& files, const QString& version, const QString& modLoader) {
     QStringList classPath = QStringList();
-    QString versionFile = Utils::getVersionFile(version);
-    bool isFabric = Utils::isFabricVersion(version);
 
     for (const QString& filename : files) {
         if (filename.length() < 8)
@@ -60,19 +58,19 @@ QStringList Utils::getClassPath(const QStringList& files, const QString& version
             continue;
 
         if (filename.contains(QString("v1_")))
-            if (!filename.contains(versionFile))
+            if (!filename.contains(Utils::getVersionFile(version)))
                 continue;
 
-        if (filename.startsWith(QString("Sodium_v")) || filename.startsWith(QString("Indium_v")) || filename.startsWith(QString("Iris_v")) || filename.startsWith(QString("OptiFine_v")))
+        if (filename.startsWith(QString("OptiFine_v")) || filename.startsWith(QString("Iris_v")) || filename.startsWith(QString("Sodium_v")) || filename.startsWith(QString("Indium_v")))
             continue;
 
-        if (isFabric)
-            if (filename.startsWith(QString("optifine")))
+        if (modLoader != "Fabric")
+            if (filename.contains(QString("fabric"), Qt::CaseInsensitive) || filename.contains(QString("Sodium"), Qt::CaseInsensitive) || filename.contains(QString("Indium"), Qt::CaseInsensitive) || filename.contains(QString("Iris"), Qt::CaseInsensitive))
                 continue;
 
-        if (!isFabric)
-            if (filename.startsWith(QString("sodium")) || filename.startsWith(QString("fabric")))
-                continue;   
+        if (modLoader != "Forge")
+            if (filename.contains(QString("forge"), Qt::CaseInsensitive) || filename.contains(QString("optifine"), Qt::CaseInsensitive) || filename.contains(QString("NEU"), Qt::CaseInsensitive) || filename.contains(QString("LunatriusCore"), Qt::CaseInsensitive) || filename.contains(QString("skyblock"), Qt::CaseInsensitive) || filename.contains(QString("SBA"), Qt::CaseInsensitive) || filename.contains(QString("DSM"), Qt::CaseInsensitive) || filename.contains(QString("Schematica"), Qt::CaseInsensitive))
+                continue;
 
         classPath << filename;
     }
@@ -80,10 +78,9 @@ QStringList Utils::getClassPath(const QStringList& files, const QString& version
     return classPath;
 }
 
-QStringList Utils::getExternalFiles(const QStringList& files, const QString& version) {
+QStringList Utils::getExternalFiles(const QStringList& files, const QString& version, const QString &modLoader) {
     QStringList externalFiles = QStringList();
     QString versionFile = Utils::getVersionFile(version);
-    bool isFabric = Utils::isFabricVersion(version);
 
     for (const QString& filename : files) {
         if (filename.length() < 8)
@@ -96,21 +93,24 @@ QStringList Utils::getExternalFiles(const QStringList& files, const QString& ver
             if (!filename.contains(versionFile))
                 continue;
 
-        if (isFabric && (filename.startsWith(QString("Sodium_v")) || filename.startsWith(QString("Indium_v")) || filename.startsWith(QString("Iris_v"))))
+        if (modLoader == "Fabric" && (filename.startsWith(QString("Sodium_v")) || filename.startsWith(QString("Indium_v")) || filename.startsWith(QString("Iris_v"))))
             externalFiles << filename;
 
-        if (!isFabric && filename.startsWith(QString("OptiFine_v")))
+        if (modLoader != "Fabric" && filename.startsWith(QString("OptiFine_v")))
             externalFiles << filename;
     }
 
     return externalFiles;
 }
 
+QString Utils::getNativesFile(const QStringList& files, const QString& version) {
+    for (const QString& filename : files) {
+        if (filename.endsWith(Utils::getVersionFile(version) + ".zip")) {
+            return filename.left(filename.length() - 4);
+        }
+    }
 
-bool Utils::isFabricVersion(const QString& version) {
-    if (version == "1.7" || version == "1.8" || version == "1.12")
-        return false;
-    return true;
+    return "";
 }
 
 
@@ -136,4 +136,26 @@ QStringList Utils::getOrderedAvailableVersions() {
     });
 
     return versionList;
+}
+QStringList Utils::getAvailableModLoaders(const QString& version) {
+    QString lunarDir = FS::getLunarDirectory();
+
+    QDir multiverDir(FS::combinePaths(lunarDir, "offline", "multiver"));
+
+    QStringList list = multiverDir.entryList({ "*" + Utils::getVersionFile(version) + ".jar" }, QDir::Files, QDir::Name);
+
+    QStringList modloaderList = QStringList();
+
+    for (const QString& filename : list) {
+        if (filename.startsWith("Forge", Qt::CaseInsensitive)) {
+            modloaderList.append("Forge");
+        }
+        else if (filename.startsWith("Fabric", Qt::CaseInsensitive)) {
+            modloaderList.append("Fabric");
+        }
+        else if (filename.startsWith("Optifine", Qt::CaseInsensitive)) {
+            modloaderList.append("Optifine");
+        }
+    }
+    return modloaderList;
 }

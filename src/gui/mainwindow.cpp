@@ -84,6 +84,10 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), config(Config::lo
     versionSelect = new QComboBox();
     versionSelect->addItems(Utils::getOrderedAvailableVersions());
 
+    modLoaderSelect = new QComboBox();
+    modLoaderSelect->addItems(Utils::getAvailableModLoaders(versionSelect->currentText()));
+    connect(versionSelect, &QComboBox::currentTextChanged, [&](const QString text) {modLoaderSelect->clear(); modLoaderSelect->addItems(Utils::getAvailableModLoaders(text));});
+
     launchButton = new QPushButton();
     launchButton->setMinimumHeight(80);
     connect(launchButton, &QPushButton::clicked, this, &MainWindow::launch);
@@ -94,6 +98,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), config(Config::lo
 
     mainLayout->addWidget(pageList);
     mainLayout->addWidget(versionSelect, 1, 0);
+    mainLayout->addWidget(modLoaderSelect, 2, 0);
     mainLayout->addWidget(launchButton, 4, 0);
 
 
@@ -173,6 +178,7 @@ void MainWindow::apply() {
         page->apply();
     }
     config.gameVersion = versionSelect->currentText();
+    config.modLoader = modLoaderSelect->currentText();
 }
 
 void MainWindow::load() {
@@ -180,6 +186,7 @@ void MainWindow::load() {
         page->load();
     }
     versionSelect->setCurrentText(config.gameVersion);
+    modLoaderSelect->setCurrentText(config.modLoader);
 }
 
 

@@ -47,6 +47,7 @@ private:
     QStackedWidget* pageStack;
     QPushButton* launchButton;
     QComboBox* versionSelect;
+    QComboBox* modLoaderSelect;
 
     QList<ConfigurationPage*> pages;
 

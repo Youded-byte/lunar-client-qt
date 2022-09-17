@@ -1,6 +1,6 @@
 #include <QApplication>
 #include <QStandardPaths>
-#include <QCommandLineParser> 
+#include <QCommandLineParser>
 
 #include "gui/mainwindow.h"
 #include "launch/offlinelauncher.h"

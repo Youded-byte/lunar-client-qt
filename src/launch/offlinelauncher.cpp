@@ -44,9 +44,11 @@ bool OfflineLauncher::launch() {
 
     QFileInfoList libsList = QDir(FS::getLibsDirectory()).entryInfoList(QDir::Files);
 
-    QStringList classPath = Utils::getClassPath(workingDirFiles, config.gameVersion);
+    QStringList classPath = Utils::getClassPath(workingDirFiles, config.gameVersion, config.modLoader);
 
     QStringList ichorClassPath = classPath;
+
+    QString nativesFile = Utils::getNativesFile(workingDirFiles, config.gameVersion);
 
     for(const QFileInfo& info : libsList) {
         classPath << info.absoluteFilePath();
@@ -55,19 +57,20 @@ bool OfflineLauncher::launch() {
     QStringList args{
          "--add-modules", "jdk.naming.dns",
          "--add-exports", "jdk.naming.dns/com.sun.jndi.dns=java.naming",
-         "-Djna.boot.library.path=natives",
+         "-Djna.boot.library.path=" + nativesFile,
          "-Dlog4j2.formatMsgNoLookups=true",
          "--add-opens", "java.base/java.io=ALL-UNNAMED",
          QString("-Xms%1m").arg(config.initialMemory),
          QString("-Xmx%1m").arg(config.maximumMemory),
-         "-Djava.library.path=natives",
+         "-Djava.library.path=" + nativesFile,
          "-cp", classPath.join(QDir::listSeparator())
     };
+
+    args << Utils::getAgentFlags("NativesPrepare", nativesFile);
 
     for(const Agent& agent : config.agents)
         if(agent.enabled)
             args << "-javaagent:" + agent.path + '=' + agent.option;
-
 
     if(config.useLevelHeadPrefix || config.useLevelHeadNick)
         args << Utils::getAgentFlags("LevelHeadImproved", getLevelHeadOptions(config.useLevelHeadPrefix, config.levelHeadPrefix, config.useLevelHeadNick, QString::number(config.levelHeadNickLevel)));
@@ -96,7 +99,7 @@ bool OfflineLauncher::launch() {
             "--workingDirectory", ".",
             "--classpathDir", ".",
             "--ichorClassPath", ichorClassPath.join(QDir::listSeparator()),
-            "--ichorExternalFiles", Utils::getExternalFiles(workingDirFiles, config.gameVersion).join(QString(","))
+            "--ichorExternalFiles", Utils::getExternalFiles(workingDirFiles, config.gameVersion, config.modLoader).join(QString(","))
     };
 
     if(config.useCosmetics)

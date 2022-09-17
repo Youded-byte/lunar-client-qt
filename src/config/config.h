@@ -28,6 +28,7 @@ public:
 class Config {
 public:
     QString gameVersion;
+    QString modLoader;
 
 
     bool keepMemorySame;
