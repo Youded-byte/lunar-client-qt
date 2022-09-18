@@ -98,7 +98,7 @@ bool OfflineLauncher::launch() {
             "--height", QString::number(config.windowHeight),
             "--workingDirectory", ".",
             "--classpathDir", ".",
-            "--ichorClassPath", ichorClassPath.join(QDir::listSeparator()),
+            "--ichorClassPath", ichorClassPath.join(QString(",")),
             "--ichorExternalFiles", Utils::getExternalFiles(workingDirFiles, config.gameVersion, config.modLoader).join(QString(","))
     };
 

@@ -33,6 +33,8 @@ QString Utils::getGameVersion(const QString& version) {
         return "1.19.2";
     if (version == "1.18")
         return "1.18.2";
+    if (version == "1.8")
+        return "1.8.9";
     return version;
 }
 
@@ -69,7 +71,11 @@ QStringList Utils::getClassPath(const QStringList& files, const QString& version
                 continue;
 
         if (modLoader != "Forge")
-            if (filename.contains(QString("forge"), Qt::CaseInsensitive) || filename.contains(QString("optifine"), Qt::CaseInsensitive) || filename.contains(QString("NEU"), Qt::CaseInsensitive) || filename.contains(QString("LunatriusCore"), Qt::CaseInsensitive) || filename.contains(QString("skyblock"), Qt::CaseInsensitive) || filename.contains(QString("SBA"), Qt::CaseInsensitive) || filename.contains(QString("DSM"), Qt::CaseInsensitive) || filename.contains(QString("Schematica"), Qt::CaseInsensitive))
+            if (filename.contains(QString("forge"), Qt::CaseInsensitive) || filename.contains(QString("NEU"), Qt::CaseInsensitive) || filename.contains(QString("LunatriusCore"), Qt::CaseInsensitive) || filename.contains(QString("skyblock"), Qt::CaseInsensitive) || filename.contains(QString("SBA"), Qt::CaseInsensitive) || filename.contains(QString("DSM"), Qt::CaseInsensitive) || filename.contains(QString("Schematica"), Qt::CaseInsensitive))
+                continue;
+
+        if (modLoader == "Fabric")
+            if (filename.contains(QString("optifine"), Qt::CaseInsensitive))
                 continue;
 
         classPath << filename;
