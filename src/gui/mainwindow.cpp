@@ -4,6 +4,7 @@
 
 #include "mainwindow.h"
 
+#include <QCoreApplication>
 #include <QGridLayout>
 #include <QListWidgetItem>
 #include <QComboBox>
@@ -22,11 +23,12 @@
 #include "launch/launcher.h"
 #include "buildconfig.h"
 #include "widgets/widgetutils.h"
+#include "util/fs.h"
 #include "util/utils.h"
 
 MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), config(Config::load()), offlineLauncher(config){
     setWindowTitle(QStringLiteral("Lunar Client Qt v") + BuildConfig::VERSION);
-    static QString icon = QStringLiteral("icon.ico");
+    static QString icon = FS::combinePaths(QCoreApplication::applicationDirPath(), QStringLiteral("icon.ico"));
     if (QFile::exists(icon))
         setWindowIcon(QIcon(icon));
     else {

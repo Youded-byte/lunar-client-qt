@@ -4,6 +4,7 @@
 
 #include "offlinelauncher.h"
 
+#include <QCoreApplication>
 #include <QProcess>
 #include <QDir>
 #include <QDirIterator>
@@ -120,8 +121,8 @@ bool OfflineLauncher::launch() {
     env.remove("_JAVA_OPTIONS");
 
     process.setProcessEnvironment(env);
-    process.setStandardOutputFile("latest.log", QIODevice::Truncate);
-    process.setStandardErrorFile("error.log", QIODevice::Truncate);
+    process.setStandardOutputFile(FS::combinePaths(QCoreApplication::applicationDirPath(), "latest.log"), QIODevice::Truncate);
+    process.setStandardErrorFile(FS::combinePaths(QCoreApplication::applicationDirPath(), "error.log"), QIODevice::Truncate);
 
     if(!process.startDetached()){
         emit error("Failed to start process: " + process.errorString());
