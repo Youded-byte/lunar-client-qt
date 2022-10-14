@@ -94,7 +94,7 @@ bool OfflineLauncher::launch() {
             "--assetIndex", Utils::getAssetsIndex(config.gameVersion),
             "--userProperties", "{}",
             "--gameDir", config.useCustomMinecraftDir ? config.customMinecraftDir : FS::getMinecraftDirectory(),
-            "--launcherVersion", "2.12.8",
+            "--launcherVersion", "2.13.0",
             "--width", QString::number(config.windowWidth),
             "--height", QString::number(config.windowHeight),
             "--workingDirectory", ".",
