@@ -29,6 +29,12 @@ It is common for people to use external programs such as overlays, proxies and c
 This launcher is able to launch lunar client very quickly. The option to disable cosmetics may speed this process up even further. The ability to use
 a custom JRE and JVM arguments opens up more possibilities for performance improvements. You can refer to [this](https://github.com/Youded-byte/Java-Optimisations-MC/blob/main/README.md) for advice.
 
+
+## Bugs
+Bugs and Crashes are bound to happen as changes outside our control happen. If a crash happens it is likely due to old files being left over by lunar.
+Try first to clear your `%userprofile%\.lunarclient\offline\multiver` folder to remove old files, then launch your desired version on the official launcher.
+If your game still does not work, open an issue, stating your game version, forge, fabric or optifine option and add explanation, like copying the error.log and latest.log file.
+
 ## Build instructions
 Make sure you have Qt6 or Qt5 and CMake 3.21+ installed.
 ```
