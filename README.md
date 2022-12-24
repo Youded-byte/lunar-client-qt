@@ -31,7 +31,7 @@ a custom JRE and JVM arguments opens up more possibilities for performance impro
 
 
 ## Bugs
-Bugs and Crashes are bound to happen as changes outside our control happen. If a crash happens it is likely due to old files being left over by lunar.
+Bugs and crashes are bound to happen as changes outside our control happen. If a crash happens it is likely due to old files being left over by lunar.
 Try first to clear your `%userprofile%\.lunarclient\offline\multiver` folder to remove old files, then launch your desired version on the official launcher.
 If your game still does not work, open an issue, stating your game version, forge, fabric or optifine option and add explanation, like copying the error.log and latest.log file.
 
