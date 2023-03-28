@@ -63,7 +63,7 @@ QStringList Utils::getClassPath(const QStringList& files, const QString& version
             if (!filename.contains(Utils::getVersionFile(version)))
                 continue;
 
-        if (filename.startsWith(QString("OptiFine_v")) || filename.startsWith(QString("Forge_v")) || filename.startsWith(QString("Sodium_v")) || filename.startsWith(QString("Iris_v")) || filename.startsWith(QString("Indium_v")) || filename.contains(QString("NEU"), Qt::CaseInsensitive) || filename.contains(QString("LunatriusCore"), Qt::CaseInsensitive) || filename.contains(QString("SBA"), Qt::CaseInsensitive) || filename.contains(QString("DSM"), Qt::CaseInsensitive) || filename.contains(QString("Schematica"), Qt::CaseInsensitive) || filename.contains(QString("Sodium"), Qt::CaseInsensitive) || filename.contains(QString("Indium"), Qt::CaseInsensitive) || filename.contains(QString("Iris"), Qt::CaseInsensitive))
+        if (filename.startsWith(QString("OptiFine_v")) || filename.startsWith(QString("Forge_v")) || filename.startsWith(QString("Sodium_v")) || filename.startsWith(QString("Iris_v")) || filename.startsWith(QString("Indium_v")) || filename.contains(QString("NEU"), Qt::CaseInsensitive) || filename.contains(QString("LunatriusCore"), Qt::CaseInsensitive) || filename.contains(QString("SBA"), Qt::CaseInsensitive) || filename.contains(QString("DSM"), Qt::CaseInsensitive) || filename.contains(QString("Schematica"), Qt::CaseInsensitive) || filename.contains(QString("Sodium"), Qt::CaseInsensitive) || filename.contains(QString("Indium"), Qt::CaseInsensitive) || filename.contains(QString("Iris"), Qt::CaseInsensitive) || filename.contains(QString("replaymod"), Qt::CaseInsensitive))
             continue;
 
         if (modLoader != "Fabric")
@@ -108,9 +108,10 @@ QStringList Utils::getExternalFiles(const QStringList& files, const QString& ver
             if (filename.startsWith(QString("Forge_v")) || filename.contains(QString("NEU"), Qt::CaseInsensitive) || filename.contains(QString("LunatriusCore"), Qt::CaseInsensitive)|| filename.contains(QString("SBA"), Qt::CaseInsensitive) || filename.contains(QString("DSM"), Qt::CaseInsensitive) || filename.contains(QString("Schematica"), Qt::CaseInsensitive))
                 externalFiles << filename;
 
-        if (modLoader != "Fabric" && filename.startsWith(QString("OptiFine_v")))
+        if (modLoader != "Fabric" && filename.startsWith(QString("OptiFine_v"))) {
             addOptifine = true;
             optifineFileName = filename;
+        }
     }
 
     if (addOptifine)
