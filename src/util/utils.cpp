@@ -22,19 +22,28 @@ QString Utils::getAssetsIndex(const QString &version) {
     if(version == "1.7")
         return "1.7.10";
 
-    if(version.startsWith("1.18"))
+    if (version == "1.19.3")
+        return "2";
+
+    if (version.startsWith("1.17"))
+        return "1.17";
+
+    if (version.startsWith("1.18"))
         return "1.18";
+
+    if (version.startsWith("1.19"))
+        return "1.19";
 
     return version;
 }
 
 QString Utils::getGameVersion(const QString& version) {
-    if (version == "1.19")
-        return "1.19.2";
-    if (version == "1.18")
-        return "1.18.2";
+    if (version == "1.19.0")
+        return "1.19";
     if (version == "1.8")
         return "1.8.9";
+    if (version == "1.7")
+        return "1.7.10";
     return version;
 }
 
@@ -43,9 +52,12 @@ QString Utils::getVersionFile(const QString& version) {
         return QString("v1_8");
 
     if (version.length() == 3)
-        return QString(QString("v") + version.at(0)) + QString("_") + QString(version.at(2));
+        return QString(QString("v") + version.at(0)) + QString("_") + version.at(2);
 
-    return QString(QString("v") + version.at(0)) + QString("_") + QString(version.at(2)) + QString(version.at(3));
+    if (version.length() == 6)
+        return QString(QString("v") + version.at(0)) + QString("_") + version.at(2) + version.at(3) + QString("_") + version.at(5);
+
+    return QString(QString("v") + version.at(0) + QString("_") + version.at(2) +version.at(3));
 }
 
 
@@ -67,7 +79,7 @@ QStringList Utils::getClassPath(const QStringList& files, const QString& version
             continue;
 
         if (modLoader != "Fabric")
-            if (filename.contains(QString("fabric"), Qt::CaseInsensitive))
+            if (filename.contains(QString("fabric"), Qt::CaseInsensitive) || filename.contains(QString("argon"), Qt::CaseInsensitive))
                 continue;
 
         if (modLoader != "Forge")
@@ -136,19 +148,27 @@ QStringList Utils::getOrderedAvailableVersions() {
 
     QDir multiverDir(FS::combinePaths(lunarDir, "offline", "multiver"));
 
-    QStringList list = multiverDir.entryList({"v1_*"}, QDir::Files, QDir::Name);
+    QStringList list = multiverDir.entryList({"*v1_*.zip"}, QDir::Files, QDir::Name);
 
     QStringList versionList = QStringList();
 
     for (const QString& filename : list) {
         QString version = filename;
-        version.remove(version.indexOf(QString("-")), 256);
-        version.remove(0, 1);
-        version.replace("_", ".");
-        versionList.append(version);
+        version.remove(0, version.indexOf(QString("-v1_")));
+        version.remove(0, 2);
+        version.chop(4);
+        version.replace("_", "");
+        QString parsedVersion = QString();
+        if (version.length() == 4)
+            parsedVersion = QString(version.at(0) + QString(".") + version.at(1) + version.at(2) + QString(".") + version.at(3));
+        else if (version.length() == 2)
+            parsedVersion = QString(version.at(0) + QString(".") + version.at(1));
+        else
+            parsedVersion = QString(version.at(0) + QString(".") + version.at(1) + QString(".") + version.at(2));
+        versionList.append(parsedVersion);
     }
 
-    std::sort(versionList.begin(), versionList.end(), [](const QString& a, const QString& b){
+    std::sort(versionList.begin(), versionList.end(), [](const QString& a, const QString& b) {
         return QVersionNumber::fromString(a) < QVersionNumber::fromString(b);
     });
 
