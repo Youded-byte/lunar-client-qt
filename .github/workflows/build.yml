@@ -23,10 +23,6 @@ jobs:
         shell: msys2 {0}
 
     steps:
-    - uses: actions/checkout@v3
-
-    - name: Fetch Tags
-      run: git fetch --prune --tags -f
       
     - name: Install Qt & MinGW
       uses: jurplel/install-qt-action@v3
@@ -50,6 +46,11 @@ jobs:
           mingw-w64-x86_64-gcc
           mingw-w64-x86_64-make
           mingw-w64-x86_64-openssl
+
+    - uses: actions/checkout@v3
+
+    - name: Fetch Tags
+      run: git fetch --prune --tags -f
 
     - name: Configure CMake
       run: cmake . -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}} -G "MinGW Makefiles"
