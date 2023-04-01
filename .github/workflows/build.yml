@@ -77,7 +77,7 @@ jobs:
     - name: Compress
       run: zip -9 -r windows.zip 'Lunar Client Qt'
 
-    - name: Upload Artifiact
+    - name: Upload Artifact
       uses: actions/upload-artifact@v2
       with:
         name: windows
