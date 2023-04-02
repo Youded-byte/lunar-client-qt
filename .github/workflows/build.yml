@@ -173,7 +173,7 @@ jobs:
         arch: 'gcc_64'
 
     - name: Install OpenSSL
-      run: apt-get -y install openssl libssl-dev
+      run: sudo apt-get -y install openssl libssl-dev
 
     - name: Fetch Tags
       run: git fetch --prune --tags -f
