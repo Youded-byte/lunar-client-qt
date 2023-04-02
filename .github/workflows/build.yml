@@ -184,8 +184,13 @@ jobs:
       run: cmake . -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}} -DCMAKE_INSTALL_PREFIX=/usr
       
     - name: Build
-      run: make install DESTDIR=AppDir
+      run: make
           
+    - name: Move Files
+      run: |
+          mkdir AppDir
+          jq '.agentsDestDir,.libsDestDir' config.json | xargs mv -t AppDir/ lunar-client-qt
+        
     - name: 'Install linuxdeploy'
       run: |
         wget https://github.com/linuxdeploy/linuxdeploy/releases/download/continuous/linuxdeploy-x86_64.AppImage
