@@ -187,7 +187,7 @@ jobs:
       run: make
     - name: Move Files
       run: |
-        mkdir Lunar\ Client\ Qt
+        mkdir AppDir
         jq '.agentsDestDir,.libsDestDir' config.json | xargs mv -t AppDir/ lunar-client-qt
           
     - name: 'Install linuxdeploy'
