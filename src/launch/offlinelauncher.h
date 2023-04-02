@@ -13,7 +13,7 @@
 class OfflineLauncher : public Launcher{
 Q_OBJECT
 public:
-    explicit OfflineLauncher(const Config& config, QObject* parent = nullptr);
+    explicit OfflineLauncher(const Config& config, const bool useCustomAssetIndex, const QString& customAssetIndex, QObject* parent = nullptr);
 
     bool launch();
 signals:

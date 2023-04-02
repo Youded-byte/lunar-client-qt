@@ -16,7 +16,7 @@
 #include "util/fs.h"
 #include "util/utils.h"
 
-OfflineLauncher::OfflineLauncher(const Config& config, QObject *parent) : Launcher(config, parent) {
+OfflineLauncher::OfflineLauncher(const Config& config, const bool useCustomAssetIndex, const QString& customAssetIndex, QObject *parent) : Launcher(config, useCustomAssetIndex, customAssetIndex, parent) {
 }
 
 
@@ -91,7 +91,7 @@ bool OfflineLauncher::launch() {
             "com.moonsworth.lunar.genesis.Genesis",
             "--version", Utils::getGameVersion(config.gameVersion),
             "--accessToken", "0",
-            "--assetIndex", Utils::getAssetsIndex(config.gameVersion),
+            "--assetIndex", useCustomAssetIndex ? customAssetIndex : Utils::getAssetsIndex(config.gameVersion),
             "--userProperties", "{}",
             "--gameDir", config.useCustomMinecraftDir ? config.customMinecraftDir : FS::getMinecraftDirectory(),
             "--launcherVersion", "2.15.1",
