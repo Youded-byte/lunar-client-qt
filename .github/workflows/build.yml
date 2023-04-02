@@ -213,7 +213,7 @@ jobs:
 
   create_release:
     name: "Create Release"
-    needs: [build_windows, build_mac, build_arch]
+    needs: [build_windows, build_mac, build_arch, build_ubuntu]
     if: startsWith(github.ref, 'refs/tags/')
 
     runs-on: ubuntu-latest
