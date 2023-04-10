@@ -157,62 +157,9 @@ jobs:
           name: linux
           path: ./linux.tar.gz
 
-  build_ubuntu:
-    name: "Ubuntu Build"
-    
-    runs-on: ubuntu-18.04
-    steps:
-    - name: Install Qt & MinGW
-      uses: jurplel/install-qt-action@v3
-      with:
-        aqtversion: '==3.1.*'
-        py7zrversion: '>=0.20.2'
-        version: "5.15.2"
-        host: 'linux'
-        target: 'desktop'
-        arch: 'gcc_64'
-
-    - name: Install OpenSSL
-      run: sudo apt-get -y install openssl libssl-dev
-
-    - uses: actions/checkout@v3
-
-    - name: Fetch Tags
-      run: git fetch --prune --tags -f
-
-    - name: Configure CMake
-      run: cmake . -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}} -DCMAKE_INSTALL_PREFIX=/usr
-      
-    - name: Build
-      run: make
-          
-    - name: Move Files
-      run: |
-          mkdir AppDir
-          jq '.agentsDestDir,.libsDestDir' config.json | xargs mv -t AppDir/ lunar-client-qt
-        
-    - name: 'Install linuxdeploy'
-      run: |
-        wget https://github.com/linuxdeploy/linuxdeploy/releases/download/continuous/linuxdeploy-x86_64.AppImage
-        wget https://github.com/linuxdeploy/linuxdeploy-plugin-qt/releases/download/continuous/linuxdeploy-plugin-qt-x86_64.AppImage
-        chmod +x linuxdeploy-x86_64.AppImage
-        chmod +x linuxdeploy-plugin-qt-x86_64.AppImage
-
-    - name: 'Create AppImage'
-      run: |
-       ./linuxdeploy-x86_64.AppImage --appdir AppDir --plugin qt --output appimage
-       rm linuxdeploy-x86_64.AppImage
-       rm linuxdeploy-plugin-qt-x86_64.AppImage
-       mv *.AppImage lunar-client-qt-linux.AppImage
-       
-    - uses: actions/upload-artifact@v2
-      with:
-       name: linux-AppImage
-       path: lunar-client-qt-linux.AppImage
-
   create_release:
     name: "Create Release"
-    needs: [build_windows, build_mac, build_arch, build_ubuntu]
+    needs: [build_windows, build_mac, build_arch]
     if: startsWith(github.ref, 'refs/tags/')
 
     runs-on: ubuntu-latest
@@ -234,6 +181,5 @@ jobs:
         fail_on_unmatched_files: true
         files: |
           linux/linux.tar.gz
-          linux-AppImage/lunar-client-qt-linux.AppImage
           mac/mac.tar.gz
           windows/windows.zip
