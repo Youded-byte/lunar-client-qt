@@ -143,8 +143,7 @@ QString OfflineLauncher::findJavaExecutable() {
 
     QFileInfoList jreSubDirs = jreDir.entryInfoList(QDir::Dirs, QDir::Time | QDir::Reversed);
 
-    for (int i = jreSubDirs.size() - 1; i > 0; i--) {
-        const QFileInfo& jreSubDir = jreSubDirs[i];
+    for (QFileInfo jreSubDir : jreSubDirs) {
 
         if (jreSubDir.fileName().length() != 40)
             continue;

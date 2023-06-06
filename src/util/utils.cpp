@@ -40,6 +40,8 @@ QString Utils::getAssetsIndex(const QString &version) {
 QString Utils::getGameVersion(const QString& version) {
     if (version == "1.19.0")
         return "1.19";
+    if (version == "1.12")
+        return "1.12.2";
     if (version == "1.8")
         return "1.8.9";
     if (version == "1.7")
@@ -53,6 +55,9 @@ QString Utils::getVersionFile(const QString& version) {
 
     if (version.length() == 3)
         return QString(QString("v") + version.at(0)) + QString("_") + version.at(2);
+
+    if (version.length() == 4)
+        return QString(QString("v") + version.at(0)) + QString("_") + version.at(2) + version.at(3);
 
     if (version.length() == 6)
         return QString(QString("v") + version.at(0)) + QString("_") + version.at(2) + version.at(3) + QString("_") + version.at(5);
@@ -163,6 +168,8 @@ QStringList Utils::getOrderedAvailableVersions() {
             parsedVersion = QString(version.at(0) + QString(".") + version.at(1) + version.at(2) + QString(".") + version.at(3));
         else if (version.length() == 2)
             parsedVersion = QString(version.at(0) + QString(".") + version.at(1));
+        else if (version.length() == 3)
+            parsedVersion = QString(version.at(0) + QString(".") + version.at(1) + version.at(2));
         else
             parsedVersion = QString(version.at(0) + QString(".") + version.at(1) + QString(".") + version.at(2));
         versionList.append(parsedVersion);
