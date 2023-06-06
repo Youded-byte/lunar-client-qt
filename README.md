@@ -17,10 +17,14 @@ Here are repositories containing some useful java agents that you might want to 
 and https://github.com/Youded-byte/youded-lunar-client-agents.
 If you're familiar with java bytecode feel free to write your own!
 
-## Launching without launcher
+## Useful command line options
 A useful feature of this launcher is the ability to with the click of a button immediately get into lunar client without the hassle of being faced 
 with a launcher interface at every launch. Launch Lunar Client Qt with the --nogui argument and you will be launched into lunar client using the 
 options you have used in the previous launch. It can be added to a shortcut of the program with ease.
+There are plenty of additional things you can override when launching without gui. You can for example use the --gameVersion 1.8.9 or any other
+version to play that version instead of the one you last played. With --assetIndex you can override the assetIndex version, if the launcher hasn't
+been updated in a while but you want to use it anyway and you know what you're doing. --xmsOverride and --xmxOverride override your min and max
+memory allocation. Useful if one version uses more RAM than the other. Keep in mind that these forced settings will not be saved.
 
 ## Helper program support
 It is common for people to use external programs such as overlays, proxies and clients to enhance their minecraft experience. This launcher includes built-in support to launch such programs alongside lunar client.
