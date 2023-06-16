@@ -119,6 +119,10 @@ bool OfflineLauncher::launch() {
     env.remove("_JAVA_OPTS");
     env.remove("JAVA_OPTIONS");
     env.remove("_JAVA_OPTIONS");
+    env.remove("JAVA_TOOL_OPTIONS");
+    env.remove("_JAVA_TOOL_OPTIONS");
+    env.remove("JDK_JAVA_OPTIONS");
+    env.remove("_JDK_JAVA_OPTIONS");
 
     process.setProcessEnvironment(env);
     process.setStandardOutputFile(FS::combinePaths(QCoreApplication::applicationDirPath(), "latest.log"), QIODevice::Truncate);
