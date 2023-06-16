@@ -22,6 +22,7 @@ QVariant ModsModel::data(const QModelIndex &index, int role) const {
     if (index.column() == Column::NAME) {
         switch (role) {
             case Qt::DisplayRole:
+            case Qt::EditRole:
                 return mod.name;
             case Qt::ToolTipRole:
                 return mod.name;
@@ -45,10 +46,25 @@ bool ModsModel::setData(const QModelIndex &index, const QVariant &value, int rol
             }
             else {
                 QFile original = QFile(FS::combinePaths(FS::getWeaveModsDirectory(), mod.name + QStringLiteral(".jar.disabled")));
-                QFile(FS::combinePaths(FS::getWeaveModsDirectory(), mod.name + QStringLiteral(".jar.disabled"))).copy(FS::combinePaths(FS::getWeaveModsDirectory(), mod.name + QStringLiteral(".jar")));
+                original.copy(FS::combinePaths(FS::getWeaveModsDirectory(), mod.name + QStringLiteral(".jar")));
                 original.remove();
             }
             mod.enabled = !mod.enabled;
+            return true;
+        }
+        if (role == Qt::EditRole) {
+            if (mod.enabled) {
+                QFile original = QFile(FS::combinePaths(FS::getWeaveModsDirectory(), mod.name + QStringLiteral(".jar")));
+                original.copy(FS::combinePaths(FS::getWeaveModsDirectory(), value.toString() + QStringLiteral(".jar")));
+                original.remove();
+
+            }
+            else {
+                QFile original = QFile(FS::combinePaths(FS::getWeaveModsDirectory(), mod.name + QStringLiteral(".jar.disabled")));
+                original.copy(FS::combinePaths(FS::getWeaveModsDirectory(), mod.name + QStringLiteral(".jar.disabled")));
+                original.remove();
+            }
+            mod.name = value.toString();
             return true;
         }
     }
@@ -69,7 +85,7 @@ Qt::ItemFlags ModsModel::flags(const QModelIndex &index) const {
     auto flags = QAbstractTableModel::flags(index);
 
     if(index.column() == Column::NAME) {
-        flags |= Qt::ItemIsUserCheckable;
+        flags |= Qt::ItemIsEditable;
     }
 
     flags |= Qt::ItemIsDropEnabled;
