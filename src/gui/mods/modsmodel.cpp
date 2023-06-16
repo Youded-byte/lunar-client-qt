@@ -85,6 +85,7 @@ Qt::ItemFlags ModsModel::flags(const QModelIndex &index) const {
     auto flags = QAbstractTableModel::flags(index);
 
     if(index.column() == Column::NAME) {
+        flags |= Qt::ItemIsUserCheckable; 
         flags |= Qt::ItemIsEditable;
     }
 
