@@ -42,9 +42,6 @@ MinecraftPage::MinecraftPage(Config &config, QWidget *parent) : ConfigurationPag
 
 
     useCosmetics = new QCheckBox(QStringLiteral("Enable Cosmetics"));
-    unlockCosmetics = new QCheckBox(QStringLiteral("Unlock All Cosmetics"));
-
-    connect(useCosmetics, &QCheckBox::toggled, unlockCosmetics, &QCheckBox::setEnabled);
 
     windowWidth = new QSpinBox();
     windowHeight = new QSpinBox();
@@ -94,7 +91,6 @@ MinecraftPage::MinecraftPage(Config &config, QWidget *parent) : ConfigurationPag
     mainLayout->addLayout(h2Layout);
     mainLayout->addLayout(betterHurtCamContainer);
     mainLayout->addWidget(useCosmetics, 1, Qt::AlignHCenter);
-    mainLayout->addWidget(unlockCosmetics, 0, Qt::AlignCenter);
     mainLayout->addStretch(1);
 
     setLayout(mainLayout);
@@ -128,7 +124,6 @@ void MinecraftPage::apply() {
     config.autoggMessage = autoggMessage->text();
 
     config.useCosmetics = useCosmetics->isChecked();
-    config.unlockCosmetics = unlockCosmetics->isChecked();
 
     config.windowWidth = windowWidth->value();
     config.windowHeight = windowHeight->value();
@@ -154,7 +149,6 @@ void MinecraftPage::load() {
     autoggMessage->setText(config.autoggMessage);
 
     useCosmetics->setChecked(config.useCosmetics);
-    unlockCosmetics->setChecked(config.unlockCosmetics);
 
     windowWidth->setValue(config.windowWidth);
     windowHeight->setValue(config.windowHeight);

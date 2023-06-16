@@ -5,5 +5,6 @@
         <file>res/icons/agent.svg</file>
         <file>res/icons/minecraft.svg</file>
         <file>res/icons/helper.svg</file>
+        <file>res/icons/mod.svg</file>
     </qresource>
 </RCC>

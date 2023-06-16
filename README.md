@@ -17,6 +17,11 @@ Here are repositories containing some useful java agents that you might want to 
 and https://github.com/Youded-byte/youded-lunar-client-agents.
 If you're familiar with java bytecode feel free to write your own!
 
+## Weave Mods
+You are able to use Weave Mods using this launcher. Weave comes bundled in the launcher and you can enable it in the settings. Mod management can
+be done inside of the launcher. The source code can be found here https://github.com/Weave-MC/Weave-Loader. If you want to use a custom/newer
+version of Weave, disable the included Weave inside the launcher.
+
 ## Useful command line options
 A useful feature of this launcher is the ability to with the click of a button immediately get into lunar client without the hassle of being faced 
 with a launcher interface at every launch. Launch Lunar Client Qt with the --nogui argument and you will be launched into lunar client using the 

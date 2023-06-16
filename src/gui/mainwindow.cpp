@@ -66,6 +66,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), config(Config::lo
         new GeneralPage(config),
         new MinecraftPage(config),
         new AgentsPage(config),
+        new ModsPage(config),
         new HelpersPage(config)
     };
 

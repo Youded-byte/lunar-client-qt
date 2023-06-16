@@ -51,7 +51,7 @@ void Config::save() {
     saveObj["autoggMessage"] = autoggMessage;
 
     saveObj["useCosmetics"] = useCosmetics;
-    saveObj["unlockCosmetics"] = unlockCosmetics;
+    saveObj["useWeave"] = useWeave;
 
     saveObj["windowWidth"] = windowWidth;
     saveObj["windowHeight"] = windowHeight;
@@ -113,6 +113,16 @@ Config Config::load() {
         }
     }
 
+    QDir modsDir(FS::getWeaveModsDirectory());
+    if (!modsDir.exists())
+        modsDir.mkpath(modsDir.path());
+
+    QFileInfoList list = modsDir.entryInfoList({ "*.jar", "*.jar.disabled" }, QDir::Files, QDir::Name);
+
+    QList<Mod> mods = QList<Mod>();
+    for (const QFileInfo& file : list) {
+        mods.append(Mod(file.fileName().remove(".jar.disabled").remove(".jar"), !file.completeSuffix().endsWith("jar.disabled")));
+    }
 
     return {
         jsonObj["version"].toString("1.8"),
@@ -139,9 +149,10 @@ Config Config::load() {
         jsonObj["windowWidth"].toInt(640),
         jsonObj["windowHeight"].toInt(480),
         jsonObj["useCosmetics"].toBool(true),
-        jsonObj["unlockCosmetics"].toBool(false),
+        jsonObj["useWeave"].toBool(false),
         agents,
-        helpers
+        helpers,
+        mods
     };
 }
 

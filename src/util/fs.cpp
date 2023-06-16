@@ -44,3 +44,7 @@ QString FS::getMinecraftDirectory() {
 #endif
     );
 }
+
+QString FS::getWeaveModsDirectory() {
+    return combinePaths(QDir::homePath(), ".weave/mods");
+}

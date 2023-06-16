@@ -88,6 +88,8 @@ set(SOURCE_FILES
         src/gui/pages/configurationpage.h
         src/gui/pages/agentspage.cpp
         src/gui/pages/agentspage.h
+        src/gui/pages/modspage.cpp
+        src/gui/pages/modspage.h
         src/gui/pages/helperspage.cpp
         src/gui/pages/helperspage.h
         src/launch/launcher.h
@@ -105,6 +107,10 @@ set(SOURCE_FILES
         src/gui/agents/agentsmodel.h
         src/gui/agents/agentsview.cpp
         src/gui/agents/agentsview.h
+        src/gui/mods/modsmodel.cpp
+        src/gui/mods/modsmodel.h
+        src/gui/mods/modsview.cpp
+        src/gui/mods/modsview.h
         src/gui/style/removeoutline.cpp
         src/gui/style/removeoutline.h
         src/util/fs.cpp src/util/fs.h

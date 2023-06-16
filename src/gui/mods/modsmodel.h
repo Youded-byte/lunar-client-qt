@@ -1,18 +1,19 @@
-//
-// Created by nils on 2/6/22.
-//
+#ifndef LUNAR_CLIENT_QT_MODSMODEL_H
+#define LUNAR_CLIENT_QT_MODSMODEL_H
 
-#ifndef LUNAR_CLIENT_QT_AGENTSMODEL_H
-#define LUNAR_CLIENT_QT_AGENTSMODEL_H
-
-#include <QAbstractTableModel>
-
+#include "util/fs.h"
 #include "config/config.h"
 
-class AgentsModel : public QAbstractTableModel {
+#include <QAbstractTableModel>
+#include <QString>
+#include <QStringList>
+#include <QJsonObject>
+#include <QFileInfo>
+
+class ModsModel : public QAbstractTableModel {
 Q_OBJECT
 public:
-    explicit AgentsModel(QList<Agent> &agents, QObject *parent = nullptr);
+    explicit ModsModel(QList<Mod> &mods, QObject *parent = nullptr);
 
     int rowCount(const QModelIndex &parent) const override;
 
@@ -39,18 +40,17 @@ public:
     bool
     dropMimeData(const QMimeData *data, Qt::DropAction action, int row, int column, const QModelIndex &parent) override;
 
-    void addAgent(const QString& path, const QString& option);
+    void addMod(const QFileInfo& modFileInfo);
 
-    bool containsPath(const QString& path) const;
+    bool containsMod(const QString& mod) const;
 private:
-    QList<Agent> &agents; 
+    QList<Mod> &mods;
 
     enum Column {
         NAME = 0,
-        OPTION,
         NUM_COLS
     };
 };
 
 
-#endif //LUNAR_CLIENT_QT_AGENTSMODEL_H
+#endif //LUNAR_CLIENT_QT_MODSMODEL_H

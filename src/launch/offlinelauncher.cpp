@@ -82,8 +82,8 @@ bool OfflineLauncher::launch() {
     if (config.useBetterHurtCam)
         args << Utils::getAgentFlags("LunarBetterHurtCam", QString::number(config.betterHurtCamValue));
 
-    if(config.useCosmetics && config.unlockCosmetics)
-        args << Utils::getAgentFlags("UnlockCosmetics");
+    if(config.useWeave)
+        args << Utils::getAgentFlags("WeaveLoader");
 
     args << QProcess::splitCommand(config.jvmArgs);
 

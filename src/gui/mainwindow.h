@@ -17,6 +17,7 @@
 #include "pages/configurationpage.h"
 #include "pages/generalpage.h"
 #include "pages/agentspage.h"
+#include "pages/modspage.h"
 #include "pages/helperspage.h"
 #include "config/config.h"
 

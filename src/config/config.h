@@ -5,6 +5,7 @@
 #ifndef LUNAR_CLIENT_QT_CONFIG_H
 #define LUNAR_CLIENT_QT_CONFIG_H
 
+#include "util/fs.h"
 #include <QString>
 #include <QStringList>
 #include <QJsonObject>
@@ -21,6 +22,16 @@ public:
         name(QFileInfo(path).fileName()),
         path(path),
         option(option),
+        enabled(enabled)
+    {}
+};
+
+struct Mod {
+    QString name;
+    bool enabled;
+public:
+    Mod(const QString& name, bool enabled = true) :
+        name(name),
         enabled(enabled)
     {}
 };
@@ -64,10 +75,11 @@ public:
     int windowHeight;
 
     bool useCosmetics;
-    bool unlockCosmetics;
+    bool useWeave;
 
     QList<Agent> agents;
     QStringList helpers;
+    QList<Mod> mods;
 public:
     void save();
     static Config load();
