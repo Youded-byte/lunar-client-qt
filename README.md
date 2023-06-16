@@ -20,7 +20,7 @@ If you're familiar with java bytecode feel free to write your own!
 ## Weave Mods
 You are able to use Weave Mods using this launcher. Weave comes bundled in the launcher and you can enable it in the settings. Mod management can
 be done inside of the launcher. The source code can be found here https://github.com/Weave-MC/Weave-Loader. If you want to use a custom/newer
-version of Weave, disable the included Weave inside the launcher.
+version of Weave, disable the included Weave inside the launcher and add the desired one as agent instead.
 
 ## Useful command line options
 A useful feature of this launcher is the ability to with the click of a button immediately get into lunar client without the hassle of being faced 
@@ -41,8 +41,10 @@ a custom JRE and JVM arguments opens up more possibilities for performance impro
 
 ## Bugs
 Bugs and crashes are bound to happen as changes outside our control happen. If a crash happens it is likely due to old files being left over by lunar.
-Try first to clear your `%userprofile%\.lunarclient\offline\multiver` folder to remove old files, then launch your desired version on the official launcher.
+First clear your `%userprofile%\.lunarclient\offline\multiver` folder to remove old files, then launch your desired version on the official launcher.
 If your game still does not work, open an issue, stating your game version, forge, fabric or optifine option and add explanation, like copying the error.log and latest.log file.
+If the error is "Program Not Found", a possible fix is to download and use a custom JRE. A solid choice is [GraalVM](https://github.com/graalvm/graalvm-ce-builds/releases/tag/vm-22.0.0.2), but see
+[this](https://github.com/Youded-byte/Java-Optimisations-MC/blob/main/README.md) for detailed information.
 
 ## Build instructions
 Make sure you have Qt6 or Qt5 and CMake 3.21+ installed.
