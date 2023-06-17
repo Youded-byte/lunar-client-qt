@@ -53,6 +53,7 @@ bool ModsModel::setData(const QModelIndex &index, const QVariant &value, int rol
             return true;
         }
         if (role == Qt::EditRole) {
+            if (value.toString() != mod.name){
             if (mod.enabled) {
                 QFile original = QFile(FS::combinePaths(FS::getWeaveModsDirectory(), mod.name + QStringLiteral(".jar")));
                 original.copy(FS::combinePaths(FS::getWeaveModsDirectory(), value.toString() + QStringLiteral(".jar")));
@@ -66,6 +67,7 @@ bool ModsModel::setData(const QModelIndex &index, const QVariant &value, int rol
             }
             mod.name = value.toString();
             return true;
+            }
         }
     }
     return false;
