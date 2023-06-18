@@ -28,6 +28,9 @@ QString Utils::getAssetsIndex(const QString &version) {
     if (version == "1.19.4")
         return "3";
 
+    if (version.startsWith("1.20"))
+        return "5";
+
     if (version.startsWith("1.17"))
         return "1.17";
 
@@ -41,6 +44,8 @@ QString Utils::getAssetsIndex(const QString &version) {
 }
 
 QString Utils::getGameVersion(const QString& version) {
+    if (version == "1.20.0")
+        return "1.20";
     if (version == "1.19.0")
         return "1.19";
     if (version == "1.12")
@@ -54,18 +59,18 @@ QString Utils::getGameVersion(const QString& version) {
 
 QString Utils::getVersionFile(const QString& version) {
     if (version.length() < 2)
-        return QString("v1_8");
+        return QStringLiteral("v1_8");
 
     if (version.length() == 3)
-        return QString(QString("v") + version.at(0)) + QString("_") + version.at(2);
+        return QString(QStringLiteral("v") + version.at(0)) + QStringLiteral("_") + version.at(2);
 
     if (version.length() == 4)
-        return QString(QString("v") + version.at(0)) + QString("_") + version.at(2) + version.at(3);
+        return QString(QStringLiteral("v") + version.at(0)) + QStringLiteral("_") + version.at(2) + version.at(3);
 
     if (version.length() == 6)
-        return QString(QString("v") + version.at(0)) + QString("_") + version.at(2) + version.at(3) + QString("_") + version.at(5);
+        return QString(QStringLiteral("v") + version.at(0)) + QStringLiteral("_") + version.at(2) + version.at(3) + QStringLiteral("_") + version.at(5);
 
-    return QString(QString("v") + version.at(0) + QString("_") + version.at(2) +version.at(3));
+    return QString(QStringLiteral("v") + version.at(0) + QStringLiteral("_") + version.at(2) +version.at(3));
 }
 
 
@@ -76,26 +81,29 @@ QStringList Utils::getClassPath(const QStringList& files, const QString& version
         if (filename.length() < 8)
             continue;
 
-        if (!filename.endsWith(QString(".jar")))
+        if (!filename.endsWith(QStringLiteral(".jar")))
             continue;
 
-        if (filename.contains(QString("v1_")))
+        if (filename.contains(QStringLiteral("v1_")))
             if (!filename.contains(Utils::getVersionFile(version)))
                 continue;
 
-        if (filename.startsWith(QString("OptiFine_v")) || filename.startsWith(QString("Forge_v")) || filename.startsWith(QString("Sodium_v")) || filename.startsWith(QString("Iris_v")) || filename.startsWith(QString("Indium_v")) || filename.contains(QString("NEU"), Qt::CaseInsensitive) || filename.contains(QString("LunatriusCore"), Qt::CaseInsensitive) || filename.contains(QString("SBA"), Qt::CaseInsensitive) || filename.contains(QString("DSM"), Qt::CaseInsensitive) || filename.contains(QString("Schematica"), Qt::CaseInsensitive) || filename.contains(QString("Sodium"), Qt::CaseInsensitive) || filename.contains(QString("Indium"), Qt::CaseInsensitive) || filename.contains(QString("Iris"), Qt::CaseInsensitive) || filename.contains(QString("replaymod"), Qt::CaseInsensitive))
+        if (filename.startsWith("argon"))
+            continue;
+
+        if (filename.startsWith(QStringLiteral("OptiFine_v")) || filename.startsWith(QStringLiteral("Forge_v")) || filename.contains(QStringLiteral("NEU"), Qt::CaseInsensitive) || filename.contains(QStringLiteral("LunatriusCore"), Qt::CaseInsensitive) || filename.contains(QStringLiteral("SBA"), Qt::CaseInsensitive) || filename.contains(QStringLiteral("DSM"), Qt::CaseInsensitive) || filename.contains(QStringLiteral("Schematica"), Qt::CaseInsensitive) || filename.contains(QStringLiteral("Sodium"), Qt::CaseInsensitive) || filename.contains(QStringLiteral("Indium"), Qt::CaseInsensitive) || filename.contains(QStringLiteral("Iris"), Qt::CaseInsensitive) || filename.contains(QStringLiteral("Phosphor"), Qt::CaseInsensitive) || filename.contains(QStringLiteral("replaymod"), Qt::CaseInsensitive))
             continue;
 
         if (modLoader != "Fabric")
-            if (filename.contains(QString("fabric"), Qt::CaseInsensitive) || filename.contains(QString("argon"), Qt::CaseInsensitive))
+            if (filename.contains(QStringLiteral("fabric"), Qt::CaseInsensitive))
                 continue;
 
         if (modLoader != "Forge")
-            if (filename.contains(QString("forge"), Qt::CaseInsensitive) || filename.contains(QString("skyblock"), Qt::CaseInsensitive))
+            if (filename.contains(QStringLiteral("forge"), Qt::CaseInsensitive) || filename.contains(QStringLiteral("skyblock"), Qt::CaseInsensitive))
                 continue;
 
         if (modLoader == "Fabric")
-            if (filename.contains(QString("optifine"), Qt::CaseInsensitive))
+            if (filename.contains(QStringLiteral("optifine"), Qt::CaseInsensitive))
                 continue;
 
         classPath << filename;
@@ -114,21 +122,20 @@ QStringList Utils::getExternalFiles(const QStringList& files, const QString& ver
         if (filename.length() < 8)
             continue;
 
-        if (!filename.endsWith(QString(".jar")))
+        if (!filename.endsWith(QStringLiteral(".jar")))
             continue;
 
-        if (filename.contains(QString("v1_")))
-            if (!filename.contains(versionFile))
+        if (!filename.contains(versionFile))
                 continue;
 
-        if (modLoader == "Fabric" && (filename.startsWith(QString("Sodium_v")) || filename.startsWith(QString("Indium_v")) || filename.startsWith(QString("Iris_v"))))
+        if (modLoader == "Fabric" && (filename.startsWith(QStringLiteral("Sodium")) || filename.startsWith(QStringLiteral("Indium")) || filename.startsWith(QStringLiteral("Iris")) || filename.startsWith(QStringLiteral("Phosphor"))))
             externalFiles << filename;
 
         if (modLoader == "Forge")
-            if (filename.startsWith(QString("Forge_v")) || filename.contains(QString("NEU"), Qt::CaseInsensitive) || filename.contains(QString("LunatriusCore"), Qt::CaseInsensitive)|| filename.contains(QString("SBA"), Qt::CaseInsensitive) || filename.contains(QString("DSM"), Qt::CaseInsensitive) || filename.contains(QString("Schematica"), Qt::CaseInsensitive))
+            if (filename.startsWith(QStringLiteral("Forge_v")) || filename.contains(QStringLiteral("NEU"), Qt::CaseInsensitive) || filename.contains(QStringLiteral("LunatriusCore"), Qt::CaseInsensitive)|| filename.contains(QStringLiteral("SBA"), Qt::CaseInsensitive) || filename.contains(QStringLiteral("DSM"), Qt::CaseInsensitive) || filename.contains(QStringLiteral("Schematica"), Qt::CaseInsensitive))
                 externalFiles << filename;
 
-        if (modLoader != "Fabric" && filename.startsWith(QString("OptiFine_v"))) {
+        if (modLoader != "Fabric" && filename.startsWith(QStringLiteral("OptiFine_v"))) {
             addOptifine = true;
             optifineFileName = filename;
         }
@@ -162,19 +169,19 @@ QStringList Utils::getOrderedAvailableVersions() {
 
     for (const QString& filename : list) {
         QString version = filename;
-        version.remove(0, version.indexOf(QString("-v1_")));
+        version.remove(0, version.indexOf(QStringLiteral("-v1_")));
         version.remove(0, 2);
         version.chop(4);
         version.replace("_", "");
         QString parsedVersion = QString();
         if (version.length() == 4)
-            parsedVersion = QString(version.at(0) + QString(".") + version.at(1) + version.at(2) + QString(".") + version.at(3));
+            parsedVersion = QString(version.at(0) + QStringLiteral(".") + version.at(1) + version.at(2) + QStringLiteral(".") + version.at(3));
         else if (version.length() == 2)
-            parsedVersion = QString(version.at(0) + QString(".") + version.at(1));
+            parsedVersion = QString(version.at(0) + QStringLiteral(".") + version.at(1));
         else if (version.length() == 3)
-            parsedVersion = QString(version.at(0) + QString(".") + version.at(1) + version.at(2));
+            parsedVersion = QString(version.at(0) + QStringLiteral(".") + version.at(1) + version.at(2));
         else
-            parsedVersion = QString(version.at(0) + QString(".") + version.at(1) + QString(".") + version.at(2));
+            parsedVersion = QString(version.at(0) + QStringLiteral(".") + version.at(1) + QStringLiteral(".") + version.at(2));
         versionList.append(parsedVersion);
     }
 
