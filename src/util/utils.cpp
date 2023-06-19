@@ -129,7 +129,7 @@ QStringList Utils::getExternalFiles(const QStringList& files, const QString& ver
                 continue;
 
         if (modLoader == "Fabric" && (filename.startsWith(QStringLiteral("Sodium")) || filename.startsWith(QStringLiteral("Indium")) || filename.startsWith(QStringLiteral("Iris")) || filename.startsWith(QStringLiteral("Phosphor"))))
-            externalFiles << filename;
+                externalFiles << filename;
 
         if (modLoader == "Forge")
             if (filename.startsWith(QStringLiteral("Forge_v")) || filename.contains(QStringLiteral("NEU"), Qt::CaseInsensitive) || filename.contains(QStringLiteral("LunatriusCore"), Qt::CaseInsensitive)|| filename.contains(QStringLiteral("SBA"), Qt::CaseInsensitive) || filename.contains(QStringLiteral("DSM"), Qt::CaseInsensitive) || filename.contains(QStringLiteral("Schematica"), Qt::CaseInsensitive))
