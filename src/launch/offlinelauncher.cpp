@@ -73,15 +73,6 @@ bool OfflineLauncher::launch() {
         if(agent.enabled)
             args << "-javaagent:" + agent.path + '=' + agent.option;
 
-    if(config.useLevelHeadPrefix || config.useLevelHeadNick)
-        args << Utils::getAgentFlags("LevelHeadImproved", getLevelHeadOptions(config.useLevelHeadPrefix, config.levelHeadPrefix, config.useLevelHeadNick, QString::number(config.levelHeadNickLevel)));
-
-    if(config.useAutoggMessage)
-        args << Utils::getAgentFlags("CustomAutoGG", config.autoggMessage);
-
-    if (config.useBetterHurtCam)
-        args << Utils::getAgentFlags("LunarBetterHurtCam", QString::number(config.betterHurtCamValue));
-
     if(config.useWeave)
         args << Utils::getAgentFlags("WeaveLoader");
 
@@ -102,9 +93,6 @@ bool OfflineLauncher::launch() {
             "--ichorClassPath", ichorClassPath.join(QString(",")),
             "--ichorExternalFiles", Utils::getExternalFiles(workingDirFiles, config.gameVersion, config.modLoader).join(QString(","))
     };
-
-    if(config.useCosmetics)
-        args << "--texturesDir" << FS::combinePaths(FS::getLunarDirectory(), "textures");
 
     if(config.joinServerOnLaunch)
         args << "--server" << config.serverIp;

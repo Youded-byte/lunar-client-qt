@@ -33,20 +33,6 @@ private:
     QCheckBox* joinServerOnLaunch;
     QLineEdit* serverToJoin;
 
-    QCheckBox* useLevelHeadPrefix;
-    QLineEdit* levelHeadPrefix;
-
-    QCheckBox* useLevelHeadNick;
-    QLineEdit* levelHeadNickLevel;
-
-    QCheckBox* useBetterHurtCam;
-    QSlider* betterHurtCamValue;
-
-    QCheckBox* useAutoggMessage;
-    QLineEdit* autoggMessage;
-
-    QCheckBox* useCosmetics;
-
     QSpinBox* windowWidth;
     QSpinBox* windowHeight;
 };

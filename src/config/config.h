@@ -59,22 +59,9 @@ public:
     bool joinServerOnLaunch;
     QString serverIp;
 
-    bool useAutoggMessage;
-    QString autoggMessage;
-
-    bool useLevelHeadPrefix;
-    QString levelHeadPrefix;
-
-    bool useLevelHeadNick;
-    int levelHeadNickLevel;
-
-    bool useBetterHurtCam;
-    double betterHurtCamValue;
-
     int windowWidth;
     int windowHeight;
 
-    bool useCosmetics;
     bool useWeave;
 
     QList<Agent> agents;

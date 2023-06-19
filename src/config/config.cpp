@@ -38,19 +38,6 @@ void Config::save() {
     saveObj["joinServerOnLaunch"] = joinServerOnLaunch;
     saveObj["serverIp"] = serverIp;
 
-    saveObj["useLevelHeadPrefix"] = useLevelHeadPrefix;
-    saveObj["levelHeadPrefix"] = levelHeadPrefix;
-
-    saveObj["useLevelHeadNick"] = useLevelHeadNick;
-    saveObj["levelHeadNickLevel"] = levelHeadNickLevel;
-
-    saveObj["useBetterHurtCam"] = useBetterHurtCam;
-    saveObj["betterHurtCamValue"] = betterHurtCamValue;
-
-    saveObj["useAutoggMessage"] = useAutoggMessage;
-    saveObj["autoggMessage"] = autoggMessage;
-
-    saveObj["useCosmetics"] = useCosmetics;
     saveObj["useWeave"] = useWeave;
 
     saveObj["windowWidth"] = windowWidth;
@@ -138,17 +125,8 @@ Config Config::load() {
         jsonObj["customMinecraftDir"].toString(),
         jsonObj["joinServerOnLaunch"].toBool(false),
         jsonObj["serverIp"].toString(),
-        jsonObj["useAutoggMessage"].toBool(false),
-        jsonObj["autoggMessage"].toString(),
-        jsonObj["useLevelHeadPrefix"].toBool(false),
-        jsonObj["levelHeadPrefix"].toString(),
-        jsonObj["useLevelHeadNick"].toBool(false),
-        jsonObj["levelHeadNickLevel"].toInt(-1),
-        jsonObj["useBetterHurtCam"].toBool(false),
-        jsonObj["betterHurtCamValue"].toDouble(6),
         jsonObj["windowWidth"].toInt(640),
         jsonObj["windowHeight"].toInt(480),
-        jsonObj["useCosmetics"].toBool(true),
         jsonObj["useWeave"].toBool(false),
         agents,
         helpers,
