@@ -113,8 +113,8 @@ bool OfflineLauncher::launch() {
     env.remove("_JDK_JAVA_OPTIONS");
 
     process.setProcessEnvironment(env);
-    process.setStandardOutputFile(FS::combinePaths(QCoreApplication::applicationDirPath(), "latest.log"), QIODevice::Truncate);
-    process.setStandardErrorFile(FS::combinePaths(QCoreApplication::applicationDirPath(), "error.log"), QIODevice::Truncate);
+    process.setStandardOutputFile(FS::combinePaths(FS::getLunarDirectory(), "logs", "launcher", "renderer.log"), QIODevice::Truncate);
+    process.setStandardErrorFile(FS::combinePaths(FS::getLunarDirectory(), "logs", "launcher", "main.log"), QIODevice::Truncate);
 
     if(!process.startDetached()){
         emit error("Failed to start process: " + process.errorString());

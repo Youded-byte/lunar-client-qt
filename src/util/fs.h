@@ -10,6 +10,7 @@
 namespace FS {
     QString combinePaths(const QString& a, const QString& b);
     QString combinePaths(const QString& a, const QString& b, const QString& c);
+    QString combinePaths(const QString& a, const QString& b, const QString& c, const QString& d);
 
     QString getLibsDirectory();
     QString getAgentsDirectory();

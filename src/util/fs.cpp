@@ -15,8 +15,12 @@ QString FS::combinePaths(const QString &a, const QString &b) {
     return QDir::cleanPath(a + QDir::separator() + b);
 }
 
-QString FS::combinePaths(const QString &a, const QString &b, const QString &c) {
+QString FS::combinePaths(const QString& a, const QString& b, const QString& c) {
     return combinePaths(combinePaths(a, b), c);
+}
+
+QString FS::combinePaths(const QString& a, const QString& b, const QString& c, const QString& d) {
+    return combinePaths(combinePaths(combinePaths(a, b), c), d);
 }
 
 QString FS::getLibsDirectory() {
