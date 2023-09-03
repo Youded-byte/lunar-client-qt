@@ -7,7 +7,7 @@
 # Lunar Client Qt
 Lunar Client Qt is a lightweight, cross-platform and open sourced launcher for Lunar Client written in C++ using the Qt framework.  
   
-![alt text](https://i.imgur.com/FTnzJvi.png)
+![alt text](https://i.imgur.com/BjizyG4.png)
 
 ## Agents
 One of the primary features of this launcher is the ability to easily attach Java premain agents to your game, 
