@@ -61,6 +61,7 @@ bool OfflineLauncher::launch() {
          "-Djna.boot.library.path=" + nativesFile,
          "-Dlog4j2.formatMsgNoLookups=true",
          "--add-opens", "java.base/java.io=ALL-UNNAMED",
+         "-XX:+UseStringDeduplication",
          QString("-Xms%1m").arg(config.initialMemory),
          QString("-Xmx%1m").arg(config.maximumMemory),
          "-Djava.library.path=" + nativesFile,
