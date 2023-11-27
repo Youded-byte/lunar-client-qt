@@ -87,22 +87,28 @@ QStringList Utils::getClassPath(const QStringList& files, const QString& version
         if (filename.contains(QStringLiteral("v1_")))
             if (!filename.contains(Utils::getVersionFile(version)))
                 continue;
+            if (filename == QString(Utils::getVersionFile(version)) + QStringLiteral("-0.1.0-SNAPSHOT-all.jar"))
+                continue;
 
-        if (filename.startsWith("argon"))
+        if (filename.startsWith(QStringLiteral("argon")) || (filename.startsWith(QStringLiteral("modern")) && (Utils::getVersionFile(version).startsWith(QStringLiteral("v1_16")) || Utils::getVersionFile(version).startsWith(QStringLiteral("v1_17"))  ||  Utils::getVersionFile(version).startsWith(QStringLiteral("v1_18"))  || Utils::getVersionFile(version).startsWith(QStringLiteral("v1_19"))  || Utils::getVersionFile(version).startsWith(QStringLiteral("v1_2"))))
             continue;
 
-        if (filename.startsWith(QStringLiteral("OptiFine_v")) || filename.startsWith(QStringLiteral("Forge_v")) || filename.contains(QStringLiteral("NEU"), Qt::CaseInsensitive) || filename.contains(QStringLiteral("LunatriusCore"), Qt::CaseInsensitive) || filename.contains(QStringLiteral("SBA"), Qt::CaseInsensitive) || filename.contains(QStringLiteral("DSM"), Qt::CaseInsensitive) || filename.contains(QStringLiteral("Schematica"), Qt::CaseInsensitive) || filename.contains(QStringLiteral("Sodium"), Qt::CaseInsensitive) || filename.contains(QStringLiteral("Indium"), Qt::CaseInsensitive) || filename.contains(QStringLiteral("Iris"), Qt::CaseInsensitive) || filename.contains(QStringLiteral("Phosphor"), Qt::CaseInsensitive) || filename.startsWith(QStringLiteral("replaymod"), Qt::CaseInsensitive))
+        if ((!filename.contains(QStringLiteral("mixins"))  || modLoader == QStringLiteral("Optifine"))  && (filename.startsWith(QStringLiteral("OptiFine_v")) || filename.startsWith(QStringLiteral("Forge_v")) || filename.contains(QStringLiteral("NEU"), Qt::CaseInsensitive) || filename.contains(QStringLiteral("LunatriusCore"), Qt::CaseInsensitive) || filename.contains(QStringLiteral("SBA"), Qt::CaseInsensitive) || filename.contains(QStringLiteral("DSM"), Qt::CaseInsensitive) || filename.contains(QStringLiteral("Schematica"), Qt::CaseInsensitive) || filename.contains(QStringLiteral("Sodium"), Qt::CaseInsensitive) || filename.contains(QStringLiteral("Indium"), Qt::CaseInsensitive) || filename.contains(QStringLiteral("Iris"), Qt::CaseInsensitive) || filename.contains(QStringLiteral("Phosphor"), Qt::CaseInsensitive) || filename.startsWith(QStringLiteral("FerriteCore"), Qt::CaseInsensitive) || filename.startsWith(QStringLiteral("replaymod"), Qt::CaseInsensitive)))
             continue;
 
-        if (modLoader != "Fabric")
+        if (modLoader != QStringLiteral("Fabric"))
             if (filename.contains(QStringLiteral("fabric"), Qt::CaseInsensitive))
                 continue;
 
-        if (modLoader != "Forge")
+        if (modLoader != QStringLiteral("Forge"))
             if (filename.contains(QStringLiteral("forge"), Qt::CaseInsensitive) || filename.contains(QStringLiteral("skyblock"), Qt::CaseInsensitive))
                 continue;
 
-        if (modLoader == "Fabric")
+        if (modLoader == QStringLiteral("Optifine"))
+            if (filename.contains(QStringLiteral("mixins")))
+                continue;
+
+        if (modLoader == QStringLiteral("Fabric"))
             if (filename.contains(QStringLiteral("optifine"), Qt::CaseInsensitive))
                 continue;
 
@@ -128,7 +134,7 @@ QStringList Utils::getExternalFiles(const QStringList& files, const QString& ver
         if (!filename.contains(versionFile))
                 continue;
 
-        if (modLoader == "Fabric" && (filename.startsWith(QStringLiteral("Sodium")) || filename.startsWith(QStringLiteral("Indium")) || filename.startsWith(QStringLiteral("Iris")) || filename.startsWith(QStringLiteral("Phosphor"))))
+        if (modLoader == "Fabric" && (filename.startsWith(QStringLiteral("Sodium")) || filename.startsWith(QStringLiteral("Indium")) || filename.startsWith(QStringLiteral("Iris")) || filename.startsWith(QStringLiteral("Phosphor")) || filename.startsWith(QStringLiteral("FerriteCore")) || filename.startsWith(QStringLiteral("ReplayMod"))))
                 externalFiles << filename;
 
         if (modLoader == "Forge")
