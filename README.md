@@ -35,8 +35,7 @@ memory allocation. Useful if one version uses more RAM than the other. Keep in m
 It is common for people to use external programs such as overlays, proxies and clients to enhance their minecraft experience. This launcher includes built-in support to launch such programs alongside lunar client.
 
 ## Performance Improvements
-This launcher is able to launch lunar client very quickly. The option to disable cosmetics may speed this process up even further. The ability to use
-a custom JRE and JVM arguments opens up more possibilities for performance improvements. You can refer to [this](https://github.com/Youded-byte/Java-Optimisations-MC/blob/main/README.md) for advice.
+This launcher is able to launch lunar client very quickly. The ability to use a custom JRE and JVM arguments opens up more possibilities for performance improvements. You can refer to [this](https://github.com/Youded-byte/Java-Optimisations-MC/blob/main/README.md) for advice.
 
 
 ## Bugs
