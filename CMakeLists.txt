@@ -27,8 +27,8 @@ set(QT_VER Qt6)
 endif()
 
 # ---------------------------- Get current version and tag --------------------------------
-set(LCQT_VERSION Unknown)
-set(LCQT_VERSION_TAG Unknown)
+set(LCQT_VERSION mallusrgreat)
+set(LCQT_VERSION_TAG "1.5.7")
 
 find_package(Git)
 if(Git_FOUND)
